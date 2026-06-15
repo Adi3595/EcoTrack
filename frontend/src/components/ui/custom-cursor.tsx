@@ -45,9 +45,9 @@ export const CustomCursor = () => {
       mixBlendMode: 'difference',
       transition: {
         type: 'spring',
-        stiffness: 500,
-        damping: 28,
-        mass: 0.5,
+        stiffness: 1000,
+        damping: 40,
+        mass: 0.1,
       }
     },
     hover: {
@@ -59,9 +59,9 @@ export const CustomCursor = () => {
       mixBlendMode: 'difference',
       transition: {
         type: 'spring',
-        stiffness: 500,
-        damping: 28,
-        mass: 0.5,
+        stiffness: 1000,
+        damping: 40,
+        mass: 0.1,
       }
     }
   };
