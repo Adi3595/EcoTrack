@@ -42,7 +42,7 @@ app.add_middleware(SlowAPIMiddleware)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000", "http://frontend:3000"], 
+    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000", "http://frontend:3000", "https://ecotrack-c4af6.web.app", "https://ecotrack-c4af6.firebaseapp.com"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
