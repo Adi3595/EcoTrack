@@ -20,6 +20,7 @@ from api.chat import router as chat_router
 from api.shopping import router as shopping_router
 from api.travel import router as travel_router
 from api.notifications import router as notifications_router
+from api.quests import router as quests_router
 
 app.include_router(auth_router, prefix="/auth", tags=["auth"])
 app.include_router(activities_router, prefix="/activities", tags=["activities"])
@@ -28,6 +29,7 @@ app.include_router(chat_router, prefix="/chat", tags=["chat"])
 app.include_router(shopping_router, prefix="/shopping", tags=["shopping"])
 app.include_router(travel_router, prefix="/travel", tags=["travel"])
 app.include_router(notifications_router, prefix="/notifications", tags=["notifications"])
+app.include_router(quests_router, prefix="/quests", tags=["quests"])
 app.include_router(ws_router, tags=["websockets"])
 
 from slowapi import _rate_limit_exceeded_handler

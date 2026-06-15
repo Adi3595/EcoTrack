@@ -5,3 +5,4 @@ from models.emission import Emission
 from models.shopping import ShoppingProduct, ShoppingAnalysis
 from models.travel import TravelSession, TravelRoute
 from models.notification import PasswordResetToken, Notification
+from models.quest import Quest, UserQuest, UserTaskLog
