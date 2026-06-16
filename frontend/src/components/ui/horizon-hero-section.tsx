@@ -18,6 +18,9 @@ export const HorizonHeroSection = () => {
   // Layer Refs for Extreme 2.5D Volumetric Depth
   const bgSkyRef = useRef<HTMLDivElement>(null);      // Deepest (Sky)
   const bgMidRef = useRef<HTMLDivElement>(null);      // Midground (Mountains behind text)
+  const fog1Ref = useRef<HTMLDivElement>(null);       // Volumetric Fog 1
+  const fog2Ref = useRef<HTMLDivElement>(null);       // Volumetric Fog 2
+  const fog3Ref = useRef<HTMLDivElement>(null);       // Volumetric Fog 3
   const fgTextRef = useRef<HTMLDivElement>(null);     // Text Layer
   const maskGroundRef = useRef<HTMLDivElement>(null); // Foreground (Ground overlapping text)
   const maskCloseRef = useRef<HTMLDivElement>(null);  // Extreme Foreground (Bottom edge)
@@ -43,6 +46,15 @@ export const HorizonHeroSection = () => {
     const xToMid = gsap.quickTo(bgMidRef.current, "x", { duration: 0.9, ease: "power3.out" });
     const yToMid = gsap.quickTo(bgMidRef.current, "y", { duration: 0.9, ease: "power3.out" });
     
+    const xToFog1 = gsap.quickTo(fog1Ref.current, "x", { duration: 0.8, ease: "power3.out" });
+    const yToFog1 = gsap.quickTo(fog1Ref.current, "y", { duration: 0.8, ease: "power3.out" });
+    
+    const xToFog2 = gsap.quickTo(fog2Ref.current, "x", { duration: 0.85, ease: "power3.out" });
+    const yToFog2 = gsap.quickTo(fog2Ref.current, "y", { duration: 0.85, ease: "power3.out" });
+    
+    const xToFog3 = gsap.quickTo(fog3Ref.current, "x", { duration: 0.9, ease: "power3.out" });
+    const yToFog3 = gsap.quickTo(fog3Ref.current, "y", { duration: 0.9, ease: "power3.out" });
+
     const xToText = gsap.quickTo(fgTextRef.current, "x", { duration: 0.7, ease: "power3.out" });
     const yToText = gsap.quickTo(fgTextRef.current, "y", { duration: 0.7, ease: "power3.out" });
 
@@ -65,6 +77,16 @@ export const HorizonHeroSection = () => {
       xToMid(x * -40);
       yToMid(y * -40);
       
+      // Fog layers move at different speeds
+      xToFog1(x * -20);
+      yToFog1(y * -20);
+      
+      xToFog2(x * 10);
+      yToFog2(y * 10);
+      
+      xToFog3(x * -30);
+      yToFog3(y * -30);
+
       // Text moves slightly WITH the mouse
       xToText(x * 20);
       yToText(y * 20);
@@ -132,6 +154,32 @@ export const HorizonHeroSection = () => {
       }, "-=0.5");
     }
 
+    // Infinite Fog Drift Animations
+    gsap.to(".fog-inner-1", {
+      xPercent: -15,
+      yPercent: 10,
+      duration: 20,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut"
+    });
+    gsap.to(".fog-inner-2", {
+      xPercent: 20,
+      yPercent: -15,
+      duration: 25,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut"
+    });
+    gsap.to(".fog-inner-3", {
+      xPercent: -25,
+      yPercent: 5,
+      duration: 18,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut"
+    });
+
     return () => {
       tl.kill();
     };
@@ -150,19 +198,24 @@ export const HorizonHeroSection = () => {
       const newSection = Math.floor(progress * totalSections);
       setCurrentSection(newSection);
       
-      // We also apply a slight vertical shift to the layers based on scroll progress
+      // We apply vertical shift to background layers, but KEEP FOREGROUND PINNED
       if (bgSkyRef.current) {
         gsap.to(bgSkyRef.current, { yPercent: progress * 5, duration: 0.5, ease: "power2.out" });
       }
       if (bgMidRef.current) {
         gsap.to(bgMidRef.current, { yPercent: progress * 15, duration: 0.5, ease: "power2.out" });
       }
-      if (maskGroundRef.current) {
-        gsap.to(maskGroundRef.current, { yPercent: progress * 25, duration: 0.5, ease: "power2.out" });
+      if (fog1Ref.current) {
+        gsap.to(fog1Ref.current, { yPercent: progress * 10, duration: 0.5, ease: "power2.out" });
       }
-      if (maskCloseRef.current) {
-        gsap.to(maskCloseRef.current, { yPercent: progress * 40, duration: 0.5, ease: "power2.out" });
+      if (fog2Ref.current) {
+        gsap.to(fog2Ref.current, { yPercent: progress * 12, duration: 0.5, ease: "power2.out" });
       }
+      if (fog3Ref.current) {
+        gsap.to(fog3Ref.current, { yPercent: progress * 20, duration: 0.5, ease: "power2.out" });
+      }
+      // Foreground masks intentionally left out so they stay permanently locked to the screen 
+      // preventing them from scrolling away and maintaining the deep 3D frame.
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -229,6 +282,27 @@ export const HorizonHeroSection = () => {
             }}
           >
             <div className="absolute inset-0 bg-black/10" />
+          </div>
+        </div>
+
+        {/* Layer 2.1: Volumetric Fog 1 */}
+        <div className="fixed inset-[-20%] w-[140%] h-[140%] z-[2] pointer-events-none mix-blend-screen opacity-60">
+          <div ref={fog1Ref} className="absolute inset-0">
+            <div className="fog-inner-1 absolute inset-0 bg-[radial-gradient(ellipse_at_30%_50%,_rgba(255,255,255,0.15)_0%,_transparent_60%)] blur-3xl" />
+          </div>
+        </div>
+
+        {/* Layer 2.2: Volumetric Fog 2 */}
+        <div className="fixed inset-[-20%] w-[140%] h-[140%] z-[3] pointer-events-none mix-blend-screen opacity-50">
+          <div ref={fog2Ref} className="absolute inset-0">
+            <div className="fog-inner-2 absolute inset-0 bg-[radial-gradient(circle_at_70%_40%,_rgba(255,255,255,0.2)_0%,_transparent_50%)] blur-2xl" />
+          </div>
+        </div>
+
+        {/* Layer 2.3: Volumetric Fog 3 */}
+        <div className="fixed inset-[-20%] w-[140%] h-[140%] z-[4] pointer-events-none mix-blend-screen opacity-40">
+          <div ref={fog3Ref} className="absolute inset-0">
+            <div className="fog-inner-3 absolute inset-0 bg-[radial-gradient(ellipse_at_50%_80%,_rgba(149,212,179,0.1)_0%,_transparent_70%)] blur-[100px]" />
           </div>
         </div>
 
