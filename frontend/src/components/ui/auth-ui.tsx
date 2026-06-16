@@ -499,7 +499,8 @@ export function AuthUI({ signInContent = {}, signUpContent = {} }: AuthUIProps) 
               </cite>
             </blockquote>
           </div>
-        </div>
+          </motion.div>
+        </AnimatePresence>
       </div>
     </div>
   );
