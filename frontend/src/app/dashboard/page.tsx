@@ -171,7 +171,7 @@ export default function Dashboard() {
         ref={bgRef}
         className="fixed inset-[-5%] w-[110%] h-[110%] z-0 pointer-events-none"
         style={{
-          backgroundImage: "url('/bg-landscape.jpg')",
+          backgroundImage: "url('/bg-landscape.png')",
           backgroundSize: "cover",
           backgroundPosition: "center",
           // A subtle gradient overlay so the text on UI cards remains readable
