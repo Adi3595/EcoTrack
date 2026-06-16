@@ -16,6 +16,7 @@ export const HorizonHeroSection = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const bgRef = useRef<HTMLDivElement>(null);
   const fgRef = useRef<HTMLDivElement>(null);
+  const maskRef = useRef<HTMLDivElement>(null); // New layer for foreground 3D overlapping
   
   const titleRefs = useRef<(HTMLHeadingElement | null)[]>([]);
   const subtitleRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -38,6 +39,10 @@ export const HorizonHeroSection = () => {
     const xToFg = gsap.quickTo(fgRef.current, "x", { duration: 0.8, ease: "power3.out" });
     const yToFg = gsap.quickTo(fgRef.current, "y", { duration: 0.8, ease: "power3.out" });
 
+    // Foreground mask moves the fastest for extreme 3D pop
+    const xToMask = gsap.quickTo(maskRef.current, "x", { duration: 0.8, ease: "power3.out" });
+    const yToMask = gsap.quickTo(maskRef.current, "y", { duration: 0.8, ease: "power3.out" });
+
     const onMouseMove = (e: MouseEvent) => {
       const { innerWidth, innerHeight } = window;
       // Normalize to -1 to 1
@@ -48,9 +53,13 @@ export const HorizonHeroSection = () => {
       xToBg(x * -50);
       yToBg(y * -50);
       
-      // Move foreground slightly with mouse to pop out
+      // Move text slightly with mouse
       xToFg(x * 20);
       yToFg(y * 20);
+
+      // Move foreground mask extremely opposite to create huge depth disparity
+      xToMask(x * -90);
+      yToMask(y * -90);
     };
 
     window.addEventListener("mousemove", onMouseMove);
@@ -165,9 +174,9 @@ export const HorizonHeroSection = () => {
     <div ref={containerRef} className="relative w-full text-white bg-black font-sans selection:bg-primary/30">
 
       {/* 3D Scroll Experience Container */}
-      <div className="relative w-full h-[300vh]">
+      <div className="relative w-full h-[300vh] overflow-hidden">
         
-        {/* Fixed 3D Image Parallax Background */}
+        {/* Fixed 3D Image Parallax Background (Deepest Layer) */}
         <div className="fixed inset-[-10%] w-[120%] h-[120%] z-0 pointer-events-none overflow-hidden">
           <div 
             ref={bgRef}
@@ -213,7 +222,7 @@ export const HorizonHeroSection = () => {
           </div>
         </div>
 
-        {/* Scroll Sections Overlay */}
+        {/* Text Layer (Midground) */}
         <div ref={fgRef} className="relative z-10 pointer-events-none">
           {[...Array(3)].map((_, i) => (
             <section key={i} className="h-screen w-full flex flex-col items-center justify-center text-center px-6">
@@ -256,7 +265,7 @@ export const HorizonHeroSection = () => {
                   <Magnetic strength={0.3}>
                     <a 
                       href="/login" 
-                      className="px-8 py-4 bg-primary text-[#001209] font-bold rounded-full text-lg shadow-[0_0_30px_rgba(149,212,179,0.5)] hover:shadow-[0_0_50px_rgba(149,212,179,0.8)] transition-all duration-300 transform hover:scale-105 inline-block backdrop-blur-md"
+                      className="px-8 py-4 bg-primary text-[#001209] font-bold rounded-full text-lg shadow-[0_0_30px_rgba(149,212,179,0.5)] hover:shadow-[0_0_50px_rgba(149,212,179,0.8)] transition-all duration-300 transform hover:scale-105 inline-block backdrop-blur-md relative z-30"
                     >
                       Enter EcoTrack
                     </a>
@@ -265,6 +274,24 @@ export const HorizonHeroSection = () => {
               )}
             </section>
           ))}
+        </div>
+
+        {/* Fixed Foreground Mask (Overlaps the text layer to create extreme 3D depth) */}
+        <div className="fixed inset-[-15%] w-[130%] h-[130%] z-20 pointer-events-none overflow-hidden">
+          <div 
+            ref={maskRef}
+            className="absolute inset-0"
+            style={{
+              backgroundImage: "url('/bg-landscape.png')",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              transformOrigin: "center center",
+              // CSS Masking to only show the bottom of the landscape (e.g. ground, mountains)
+              // This makes the foreground element overlap the text
+              WebkitMaskImage: "linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 45%)",
+              maskImage: "linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 45%)"
+            }}
+          />
         </div>
       </div>
 
