@@ -14,9 +14,13 @@ gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 export const HorizonHeroSection = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const bgRef = useRef<HTMLDivElement>(null);
-  const fgRef = useRef<HTMLDivElement>(null);
-  const maskRef = useRef<HTMLDivElement>(null); // New layer for foreground 3D overlapping
+  
+  // Layer Refs for Extreme 2.5D Volumetric Depth
+  const bgSkyRef = useRef<HTMLDivElement>(null);      // Deepest (Sky)
+  const bgMidRef = useRef<HTMLDivElement>(null);      // Midground (Mountains behind text)
+  const fgTextRef = useRef<HTMLDivElement>(null);     // Text Layer
+  const maskGroundRef = useRef<HTMLDivElement>(null); // Foreground (Ground overlapping text)
+  const maskCloseRef = useRef<HTMLDivElement>(null);  // Extreme Foreground (Bottom edge)
   
   const titleRefs = useRef<(HTMLHeadingElement | null)[]>([]);
   const subtitleRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -26,40 +30,52 @@ export const HorizonHeroSection = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [currentSection, setCurrentSection] = useState(0);
   const [isReady, setIsReady] = useState(false);
-  const totalSections = 2; // 0, 1, 2 = 3 total sections
+  const totalSections = 2;
 
   // GSAP Mouse Tracking 3D Parallax
   useGSAP(() => {
     setIsReady(true);
     
-    // We create quickTo functions for buttery smooth 60fps tracking
-    const xToBg = gsap.quickTo(bgRef.current, "x", { duration: 0.8, ease: "power3.out" });
-    const yToBg = gsap.quickTo(bgRef.current, "y", { duration: 0.8, ease: "power3.out" });
+    // QuickTo for 60fps tracking
+    const xToSky = gsap.quickTo(bgSkyRef.current, "x", { duration: 1.2, ease: "power3.out" });
+    const yToSky = gsap.quickTo(bgSkyRef.current, "y", { duration: 1.2, ease: "power3.out" });
     
-    const xToFg = gsap.quickTo(fgRef.current, "x", { duration: 0.8, ease: "power3.out" });
-    const yToFg = gsap.quickTo(fgRef.current, "y", { duration: 0.8, ease: "power3.out" });
+    const xToMid = gsap.quickTo(bgMidRef.current, "x", { duration: 0.9, ease: "power3.out" });
+    const yToMid = gsap.quickTo(bgMidRef.current, "y", { duration: 0.9, ease: "power3.out" });
+    
+    const xToText = gsap.quickTo(fgTextRef.current, "x", { duration: 0.7, ease: "power3.out" });
+    const yToText = gsap.quickTo(fgTextRef.current, "y", { duration: 0.7, ease: "power3.out" });
 
-    // Foreground mask moves the fastest for extreme 3D pop
-    const xToMask = gsap.quickTo(maskRef.current, "x", { duration: 0.8, ease: "power3.out" });
-    const yToMask = gsap.quickTo(maskRef.current, "y", { duration: 0.8, ease: "power3.out" });
+    const xToGround = gsap.quickTo(maskGroundRef.current, "x", { duration: 0.5, ease: "power3.out" });
+    const yToGround = gsap.quickTo(maskGroundRef.current, "y", { duration: 0.5, ease: "power3.out" });
+
+    const xToClose = gsap.quickTo(maskCloseRef.current, "x", { duration: 0.3, ease: "power3.out" });
+    const yToClose = gsap.quickTo(maskCloseRef.current, "y", { duration: 0.3, ease: "power3.out" });
 
     const onMouseMove = (e: MouseEvent) => {
       const { innerWidth, innerHeight } = window;
-      // Normalize to -1 to 1
       const x = (e.clientX / innerWidth) * 2 - 1;
       const y = (e.clientY / innerHeight) * 2 - 1;
 
-      // Move background deeply opposite for parallax
-      xToBg(x * -50);
-      yToBg(y * -50);
+      // Deep Sky moves very little and in reverse
+      xToSky(x * -15);
+      yToSky(y * -15);
       
-      // Move text slightly with mouse
-      xToFg(x * 20);
-      yToFg(y * 20);
+      // Midground mountains move more in reverse
+      xToMid(x * -40);
+      yToMid(y * -40);
+      
+      // Text moves slightly WITH the mouse
+      xToText(x * 20);
+      yToText(y * 20);
 
-      // Move foreground mask extremely opposite to create huge depth disparity
-      xToMask(x * -90);
-      yToMask(y * -90);
+      // Foreground ground moves extremely in reverse (pop out effect)
+      xToGround(x * -90);
+      yToGround(y * -90);
+
+      // Extreme foreground edge moves the fastest
+      xToClose(x * -150);
+      yToClose(y * -150);
     };
 
     window.addEventListener("mousemove", onMouseMove);
@@ -134,14 +150,18 @@ export const HorizonHeroSection = () => {
       const newSection = Math.floor(progress * totalSections);
       setCurrentSection(newSection);
       
-      // We also apply a slight vertical shift to the background based on scroll progress
-      // to give an extra sense of travel
-      if (bgRef.current) {
-        gsap.to(bgRef.current, {
-          yPercent: progress * 15,
-          duration: 0.5,
-          ease: "power2.out"
-        });
+      // We also apply a slight vertical shift to the layers based on scroll progress
+      if (bgSkyRef.current) {
+        gsap.to(bgSkyRef.current, { yPercent: progress * 5, duration: 0.5, ease: "power2.out" });
+      }
+      if (bgMidRef.current) {
+        gsap.to(bgMidRef.current, { yPercent: progress * 15, duration: 0.5, ease: "power2.out" });
+      }
+      if (maskGroundRef.current) {
+        gsap.to(maskGroundRef.current, { yPercent: progress * 25, duration: 0.5, ease: "power2.out" });
+      }
+      if (maskCloseRef.current) {
+        gsap.to(maskCloseRef.current, { yPercent: progress * 40, duration: 0.5, ease: "power2.out" });
       }
     };
 
@@ -176,21 +196,39 @@ export const HorizonHeroSection = () => {
       {/* 3D Scroll Experience Container */}
       <div className="relative w-full h-[300vh] overflow-hidden">
         
-        {/* Fixed 3D Image Parallax Background (Deepest Layer) */}
-        <div className="fixed inset-[-10%] w-[120%] h-[120%] z-0 pointer-events-none overflow-hidden">
+        {/* Layer 1: Deepest Background (Sky/Top) */}
+        <div className="fixed inset-[-5%] w-[110%] h-[110%] z-0 pointer-events-none overflow-hidden">
           <div 
-            ref={bgRef}
+            ref={bgSkyRef}
             className="absolute inset-0"
             style={{
               backgroundImage: "url('/bg-landscape.png')",
               backgroundSize: "cover",
               backgroundPosition: "center",
-              transformOrigin: "center center"
+              transformOrigin: "center center",
+              WebkitMaskImage: "linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 60%)",
+              maskImage: "linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 60%)"
             }}
           >
-            {/* Cinematic Gradient Overlays to blend the image into the page */}
-            <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/10 to-black/80" />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-black/60" />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-transparent" />
+          </div>
+        </div>
+
+        {/* Layer 2: Midground (Mountains) */}
+        <div className="fixed inset-[-10%] w-[120%] h-[120%] z-[1] pointer-events-none overflow-hidden">
+          <div 
+            ref={bgMidRef}
+            className="absolute inset-0"
+            style={{
+              backgroundImage: "url('/bg-landscape.png')",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              transformOrigin: "center center",
+              WebkitMaskImage: "linear-gradient(to bottom, rgba(0,0,0,0) 30%, rgba(0,0,0,1) 50%, rgba(0,0,0,1) 70%, rgba(0,0,0,0) 85%)",
+              maskImage: "linear-gradient(to bottom, rgba(0,0,0,0) 30%, rgba(0,0,0,1) 50%, rgba(0,0,0,1) 70%, rgba(0,0,0,0) 85%)"
+            }}
+          >
+            <div className="absolute inset-0 bg-black/10" />
           </div>
         </div>
 
@@ -222,8 +260,8 @@ export const HorizonHeroSection = () => {
           </div>
         </div>
 
-        {/* Text Layer (Midground) */}
-        <div ref={fgRef} className="relative z-10 pointer-events-none">
+        {/* Layer 3: Text Layer (Midground) */}
+        <div ref={fgTextRef} className="relative z-10 pointer-events-none">
           {[...Array(3)].map((_, i) => (
             <section key={i} className="h-screen w-full flex flex-col items-center justify-center text-center px-6">
               <motion.h1 
@@ -232,7 +270,7 @@ export const HorizonHeroSection = () => {
                 whileInView={{ y: 0, opacity: 1 }}
                 viewport={{ once: true, margin: "-10%" }}
                 transition={{ duration: 1.2, ease: [0.76, 0, 0.24, 1], delay: 0.1 }}
-                className="text-6xl md:text-[120px] font-extrabold tracking-tighter leading-none mb-6 flex drop-shadow-[0_0_40px_rgba(0,0,0,0.8)]"
+                className="text-6xl md:text-[120px] font-extrabold tracking-tighter leading-none mb-6 flex drop-shadow-[0_0_50px_rgba(0,0,0,0.9)]"
               >
                 <TextReveal text={titles[i]} delay={0.1 * i} />
               </motion.h1>
@@ -245,11 +283,11 @@ export const HorizonHeroSection = () => {
                 transition={{ duration: 1.2, ease: [0.76, 0, 0.24, 1], delay: 0.3 }}
                 className="space-y-4 max-w-3xl"
               >
-                <div className="text-xl md:text-3xl font-bold tracking-wide text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]">
+                <div className="text-xl md:text-3xl font-bold tracking-wide text-white drop-shadow-[0_4px_15px_rgba(0,0,0,0.9)]">
                     <p className="subtitle-line">{subtitles[i].line1}</p>
                     <p className="subtitle-line">{subtitles[i].line2}</p>
                 </div>
-                <p className="subtitle-line text-sm md:text-lg text-white/90 leading-relaxed font-medium mt-6 max-w-2xl mx-auto drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]">
+                <p className="subtitle-line text-sm md:text-lg text-white/90 leading-relaxed font-medium mt-6 max-w-2xl mx-auto drop-shadow-[0_4px_15px_rgba(0,0,0,0.9)]">
                     {subtitles[i].paragraph}
                 </p>
               </motion.div>
@@ -276,20 +314,34 @@ export const HorizonHeroSection = () => {
           ))}
         </div>
 
-        {/* Fixed Foreground Mask (Overlaps the text layer to create extreme 3D depth) */}
+        {/* Layer 4: Foreground Mask (Ground, overlaps text) */}
         <div className="fixed inset-[-15%] w-[130%] h-[130%] z-20 pointer-events-none overflow-hidden">
           <div 
-            ref={maskRef}
+            ref={maskGroundRef}
             className="absolute inset-0"
             style={{
               backgroundImage: "url('/bg-landscape.png')",
               backgroundSize: "cover",
               backgroundPosition: "center",
               transformOrigin: "center center",
-              // CSS Masking to only show the bottom of the landscape (e.g. ground, mountains)
-              // This makes the foreground element overlap the text
-              WebkitMaskImage: "linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 45%)",
-              maskImage: "linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 45%)"
+              WebkitMaskImage: "linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 25%, rgba(0,0,0,0) 45%)",
+              maskImage: "linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 25%, rgba(0,0,0,0) 45%)"
+            }}
+          />
+        </div>
+
+        {/* Layer 5: Extreme Foreground Mask (Bottom edge popping out) */}
+        <div className="fixed inset-[-20%] w-[140%] h-[140%] z-30 pointer-events-none overflow-hidden">
+          <div 
+            ref={maskCloseRef}
+            className="absolute inset-0"
+            style={{
+              backgroundImage: "url('/bg-landscape.png')",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              transformOrigin: "center center",
+              WebkitMaskImage: "linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 10%, rgba(0,0,0,0) 25%)",
+              maskImage: "linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 10%, rgba(0,0,0,0) 25%)"
             }}
           />
         </div>
