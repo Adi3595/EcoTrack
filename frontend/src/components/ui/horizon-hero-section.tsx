@@ -366,7 +366,7 @@ export const HorizonHeroSection = () => {
       </motion.nav>
 
       {/* Standard Content Flow below the 3D Experience */}
-      <div className="relative z-10 bg-black w-full border-t border-primary/10">
+      <div className="relative z-10 bg-transparent w-full">
 
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 mix-blend-overlay pointer-events-none" />
 
