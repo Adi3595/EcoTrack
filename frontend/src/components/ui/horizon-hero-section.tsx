@@ -198,24 +198,30 @@ export const HorizonHeroSection = () => {
       const newSection = Math.floor(progress * totalSections);
       setCurrentSection(newSection);
       
-      // We apply vertical shift to background layers, but KEEP FOREGROUND PINNED
+      // We apply vertical shift to background layers
       if (bgSkyRef.current) {
         gsap.to(bgSkyRef.current, { yPercent: progress * 5, duration: 0.5, ease: "power2.out" });
       }
       if (bgMidRef.current) {
-        gsap.to(bgMidRef.current, { yPercent: progress * 15, duration: 0.5, ease: "power2.out" });
+        gsap.to(bgMidRef.current, { yPercent: progress * 10, duration: 0.5, ease: "power2.out" });
       }
       if (fog1Ref.current) {
-        gsap.to(fog1Ref.current, { yPercent: progress * 10, duration: 0.5, ease: "power2.out" });
+        gsap.to(fog1Ref.current, { yPercent: progress * 8, duration: 0.5, ease: "power2.out" });
       }
       if (fog2Ref.current) {
-        gsap.to(fog2Ref.current, { yPercent: progress * 12, duration: 0.5, ease: "power2.out" });
+        gsap.to(fog2Ref.current, { yPercent: progress * 10, duration: 0.5, ease: "power2.out" });
       }
       if (fog3Ref.current) {
-        gsap.to(fog3Ref.current, { yPercent: progress * 20, duration: 0.5, ease: "power2.out" });
+        gsap.to(fog3Ref.current, { yPercent: progress * 12, duration: 0.5, ease: "power2.out" });
       }
-      // Foreground masks intentionally left out so they stay permanently locked to the screen 
-      // preventing them from scrolling away and maintaining the deep 3D frame.
+      
+      // Foreground grass comes up little by little
+      if (maskGroundRef.current) {
+        gsap.to(maskGroundRef.current, { yPercent: progress * -5, duration: 0.5, ease: "power2.out" });
+      }
+      if (maskCloseRef.current) {
+        gsap.to(maskCloseRef.current, { yPercent: progress * -10, duration: 0.5, ease: "power2.out" });
+      }
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -286,23 +292,23 @@ export const HorizonHeroSection = () => {
         </div>
 
         {/* Layer 2.1: Volumetric Fog 1 */}
-        <div className="fixed inset-[-20%] w-[140%] h-[140%] z-[2] pointer-events-none mix-blend-screen opacity-60">
+        <div className="fixed inset-[-20%] w-[140%] h-[140%] z-[2] pointer-events-none mix-blend-screen opacity-60 will-change-transform">
           <div ref={fog1Ref} className="absolute inset-0">
-            <div className="fog-inner-1 absolute inset-0 bg-[radial-gradient(ellipse_at_30%_50%,_rgba(255,255,255,0.15)_0%,_transparent_60%)] blur-3xl" />
+            <div className="fog-inner-1 absolute inset-0 bg-[radial-gradient(ellipse_at_30%_50%,_rgba(255,255,255,0.15)_0%,_transparent_60%)]" />
           </div>
         </div>
 
         {/* Layer 2.2: Volumetric Fog 2 */}
-        <div className="fixed inset-[-20%] w-[140%] h-[140%] z-[3] pointer-events-none mix-blend-screen opacity-50">
+        <div className="fixed inset-[-20%] w-[140%] h-[140%] z-[3] pointer-events-none mix-blend-screen opacity-50 will-change-transform">
           <div ref={fog2Ref} className="absolute inset-0">
-            <div className="fog-inner-2 absolute inset-0 bg-[radial-gradient(circle_at_70%_40%,_rgba(255,255,255,0.2)_0%,_transparent_50%)] blur-2xl" />
+            <div className="fog-inner-2 absolute inset-0 bg-[radial-gradient(circle_at_70%_40%,_rgba(255,255,255,0.2)_0%,_transparent_50%)]" />
           </div>
         </div>
 
         {/* Layer 2.3: Volumetric Fog 3 */}
-        <div className="fixed inset-[-20%] w-[140%] h-[140%] z-[4] pointer-events-none mix-blend-screen opacity-40">
+        <div className="fixed inset-[-20%] w-[140%] h-[140%] z-[4] pointer-events-none mix-blend-screen opacity-40 will-change-transform">
           <div ref={fog3Ref} className="absolute inset-0">
-            <div className="fog-inner-3 absolute inset-0 bg-[radial-gradient(ellipse_at_50%_80%,_rgba(149,212,179,0.1)_0%,_transparent_70%)] blur-[100px]" />
+            <div className="fog-inner-3 absolute inset-0 bg-[radial-gradient(ellipse_at_50%_80%,_rgba(149,212,179,0.1)_0%,_transparent_70%)]" />
           </div>
         </div>
 
