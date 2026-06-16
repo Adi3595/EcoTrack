@@ -412,7 +412,7 @@ interface AuthUIProps {
 
 const defaultSignInContent = {
     image: {
-        src: "https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?q=80&w=2560&auto=format&fit=crop",
+        src: "/sign-in.jpg",
         alt: "A beautiful forest landscape representing sustainability"
     },
     quote: {
@@ -458,36 +458,30 @@ export function AuthUI({ signInContent = {}, signUpContent = {} }: AuthUIProps) 
         }
       `}</style>
 
-      {/* Crossfading Backgrounds with slow zoom */}
-      <div 
-        className={cn("absolute inset-0 bg-cover bg-center animate-slow-zoom transition-opacity duration-1000 ease-in-out", isSignIn ? "opacity-90" : "opacity-0")}
-        style={{ backgroundImage: `url(${finalSignInContent.image.src})` }}
-      />
-      <div 
-        className={cn("absolute inset-0 bg-cover bg-center animate-slow-zoom transition-opacity duration-1000 ease-in-out", !isSignIn ? "opacity-90" : "opacity-0")}
-        style={{ backgroundImage: `url(${finalSignUpContent.image.src})` }}
-      />
+      {/* Spherical Wipe Background (Right to Left) */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={isSignIn ? "signin" : "signup"}
+          initial={{ clipPath: 'circle(0% at 100% 50%)', opacity: 0.5 }}
+          animate={{ clipPath: 'circle(150% at 50% 50%)', opacity: 1 }}
+          exit={{ clipPath: 'circle(0% at 0% 50%)', opacity: 0.5 }}
+          transition={{ duration: 0.9, ease: [0.645, 0.045, 0.355, 1] }}
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: `url(${currentContent.image.src})` }}
+        />
+      </AnimatePresence>
 
       {/* Optional Dark Overlay for Readability */}
       <div className="absolute inset-0 bg-black/20 z-0" />
 
-      {/* Glassy Form Container with 3D Flip */}
-      <div className="relative z-10 flex h-full items-center justify-center p-6 [perspective:2000px]">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={isSignIn ? "signin" : "signup"}
-            initial={{ rotateY: 90, opacity: 0, scale: 0.9 }}
-            animate={{ rotateY: 0, opacity: 1, scale: 1 }}
-            exit={{ rotateY: -90, opacity: 0, scale: 0.9 }}
-            transition={{ duration: 0.6, ease: [0.645, 0.045, 0.355, 1] }}
-            className="w-full max-w-md bg-white/5 backdrop-blur-3xl shadow-[0_8px_32px_rgba(0,0,0,0.3),inset_0_1px_1px_rgba(255,255,255,0.1)] border border-white/10 p-8 rounded-[2rem]"
-            style={{ transformStyle: "preserve-3d" }}
-          >
-            <AuthFormContainer isSignIn={isSignIn} onToggle={toggleForm} />
-            
-            <div className="mt-8 text-center border-t border-white/10 pt-6">
-              <blockquote className="space-y-2 text-center text-white">
-                <p className="text-sm font-medium drop-shadow-lg">
+      {/* Static Glassy Form Container */}
+      <div className="relative z-10 flex h-full items-center justify-center p-6">
+        <div className="w-full max-w-md bg-white/5 backdrop-blur-3xl shadow-[0_8px_32px_rgba(0,0,0,0.3),inset_0_1px_1px_rgba(255,255,255,0.1)] border border-white/10 p-8 rounded-[2rem]">
+          <AuthFormContainer isSignIn={isSignIn} onToggle={toggleForm} />
+          
+          <div className="mt-8 text-center border-t border-white/10 pt-6">
+            <blockquote className="space-y-2 text-center text-white">
+              <p className="text-sm font-medium drop-shadow-lg">
                 “<Typewriter
                     key={currentContent.quote.text}
                     text={currentContent.quote.text}
@@ -499,8 +493,7 @@ export function AuthUI({ signInContent = {}, signUpContent = {} }: AuthUIProps) 
               </cite>
             </blockquote>
           </div>
-          </motion.div>
-        </AnimatePresence>
+        </div>
       </div>
     </div>
   );

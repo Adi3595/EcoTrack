@@ -57,9 +57,9 @@ export default function ChatAssistant() {
       </aside>
 
       {/* Main Chat Area */}
-      <GlassCard className="flex-1 flex flex-col min-h-0 bg-white/5 backdrop-blur-3xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)] border border-white/10 rounded-3xl overflow-hidden m-6">
+      <GlassCard className="flex-1 flex flex-col min-h-0 bg-transparent backdrop-blur-none shadow-none border border-white/20 rounded-3xl overflow-hidden m-6">
         {/* Header */}
-        <header className="h-16 border-b border-primary/10 flex items-center px-8 bg-[#00180d]/60 backdrop-blur-md z-10 shrink-0">
+        <header className="h-16 border-b border-white/20 flex items-center px-8 bg-transparent z-10 shrink-0">
           <h1 className="text-headline-sm font-semibold flex items-center gap-2 text-white">
             <Bot className="h-5 w-5 text-primary" /> AI Sustainability Coach
           </h1>

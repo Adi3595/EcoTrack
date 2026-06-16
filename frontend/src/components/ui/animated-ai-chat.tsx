@@ -355,7 +355,7 @@ export function AnimatedAIChat() {
                                         <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 shadow-lg ${msg.role === "user" ? "bg-white/10 text-white" : "bg-primary/20 text-primary border border-primary/30"}`}>
                                             {msg.role === "user" ? <User size={16} /> : <Bot size={16} />}
                                         </div>
-                                        <div className={`px-5 py-4 rounded-2xl backdrop-blur-md shadow-xl border ${msg.role === "user" ? "bg-white/10 border-white/10 text-white rounded-tr-sm" : "bg-primary/10 border-primary/20 text-white/90 rounded-tl-sm"}`}>
+                                        <div className={`px-5 py-4 rounded-2xl border ${msg.role === "user" ? "bg-transparent border-white/20 text-white rounded-tr-sm" : "bg-transparent border-primary/30 text-white/90 rounded-tl-sm"}`}>
                                             <p className="text-sm leading-relaxed">{msg.content}</p>
                                         </div>
                                     </div>
@@ -367,7 +367,7 @@ export function AnimatedAIChat() {
 
                     {/* Input Area */}
                     <motion.div 
-                        className="relative backdrop-blur-2xl bg-[#00180d]/80 rounded-2xl border border-primary/20 shadow-[0_0_40px_rgba(149,212,179,0.1)] mt-auto"
+                        className="relative bg-transparent rounded-2xl border border-white/20 mt-auto"
                         initial={{ scale: 0.98 }}
                         animate={{ scale: 1 }}
                         transition={{ delay: 0.1 }}

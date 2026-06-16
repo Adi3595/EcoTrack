@@ -69,6 +69,13 @@ export function Shared3DBackground() {
           </div>
         </div>
 
+        {/* 3D Liquid Water Blobs */}
+        <div className="absolute inset-[-20%] pointer-events-none overflow-hidden blur-[80px] opacity-40 mix-blend-screen z-[-1]">
+          <div className="absolute top-[20%] left-[10%] w-[40vw] h-[40vw] bg-primary/30 animate-liquid will-change-transform" />
+          <div className="absolute bottom-[10%] right-[10%] w-[50vw] h-[50vw] bg-[#a8e7c5]/20 animate-liquid will-change-transform" style={{ animationDelay: '-5s', animationDirection: 'reverse' }} />
+          <div className="absolute top-[40%] left-[50%] w-[35vw] h-[35vw] bg-[#00ff88]/10 animate-liquid will-change-transform" style={{ animationDelay: '-10s' }} />
+        </div>
+
         {/* 3D Floating Particles (CSS base64 noise/dots for depth) */}
         <div className="dashboard-particles absolute inset-[-10%] w-[120%] h-[120%] pointer-events-none opacity-20 will-change-transform" style={{
           backgroundImage: 'radial-gradient(rgba(255,255,255,0.4) 1px, transparent 1px)',
