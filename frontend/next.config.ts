@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // output: "standalone", // Removed for Firebase Web Frameworks compatibility
+  output: "standalone", // Required for Docker builds!
   eslint: {
     ignoreDuringBuilds: true,
   },
