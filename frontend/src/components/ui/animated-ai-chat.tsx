@@ -355,8 +355,8 @@ export function AnimatedAIChat() {
                                         <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 shadow-lg ${msg.role === "user" ? "bg-white/10 text-white" : "bg-primary/20 text-primary border border-primary/30"}`}>
                                             {msg.role === "user" ? <User size={16} /> : <Bot size={16} />}
                                         </div>
-                                        <div className={`px-5 py-4 rounded-2xl border ${msg.role === "user" ? "bg-transparent border-white/20 text-white rounded-tr-sm" : "bg-transparent border-primary/30 text-white/90 rounded-tl-sm"}`}>
-                                            <p className="text-sm leading-relaxed">{msg.content}</p>
+                                        <div className={`px-5 py-4 rounded-2xl border ${msg.role === "user" ? "bg-transparent border-white/40 text-white rounded-tr-sm shadow-[0_0_10px_rgba(255,255,255,0.05)]" : "bg-transparent border-primary/50 text-white rounded-tl-sm shadow-[0_0_10px_rgba(149,212,179,0.1)]"}`}>
+                                            <p className="text-base font-medium leading-relaxed drop-shadow-md text-white">{msg.content}</p>
                                         </div>
                                     </div>
                                 </motion.div>
@@ -367,7 +367,7 @@ export function AnimatedAIChat() {
 
                     {/* Input Area */}
                     <motion.div 
-                        className="relative bg-transparent rounded-2xl border border-white/20 mt-auto"
+                        className="relative bg-transparent rounded-2xl border-2 border-white/30 shadow-[0_0_15px_rgba(255,255,255,0.05)] mt-auto"
                         initial={{ scale: 0.98 }}
                         animate={{ scale: 1 }}
                         transition={{ delay: 0.1 }}
@@ -429,9 +429,9 @@ export function AnimatedAIChat() {
                                     "resize-none",
                                     "bg-transparent",
                                     "border-none",
-                                    "text-white/90 text-sm",
+                                    "text-white text-base font-medium drop-shadow-md",
                                     "focus:outline-none",
-                                    "placeholder:text-white/30",
+                                    "placeholder:text-white/50",
                                     "min-h-[60px]"
                                 )}
                                 style={{

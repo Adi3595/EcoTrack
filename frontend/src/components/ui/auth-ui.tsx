@@ -423,7 +423,7 @@ const defaultSignInContent = {
 
 const defaultSignUpContent = {
     image: {
-        src: "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?q=80&w=2560&auto=format&fit=crop",
+        src: "/sign-up.jpg",
         alt: "A vibrant, modern space for new eco-friendly beginnings"
     },
     quote: {

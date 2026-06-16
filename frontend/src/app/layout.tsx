@@ -39,7 +39,6 @@ import { Toaster } from "sonner";
 import { AnimatedBackground } from "@/components/ui/animated-background";
 import { CustomCursor } from "@/components/ui/custom-cursor";
 import { SmoothScrolling } from "@/components/ui/smooth-scrolling";
-import { Preloader } from "@/components/ui/preloader";
 
 export default function RootLayout({
   children,
@@ -52,7 +51,6 @@ export default function RootLayout({
         className={`${inter.variable} ${manrope.variable} antialiased bg-surface text-on-surface`}
       >
         <SmoothScrolling>
-          <Preloader />
           <CustomCursor />
           <AnimatedBackground />
           {children}

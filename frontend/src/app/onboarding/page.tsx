@@ -96,7 +96,13 @@ export default function Onboarding() {
   }
 
   return (
-    <div className="flex min-h-screen bg-[#001209] text-white selection:bg-primary/30 p-6 md:p-10 items-center justify-center relative overflow-hidden">
+    <div 
+      className="flex min-h-screen bg-[#001209] bg-cover bg-center text-white selection:bg-primary/30 p-6 md:p-10 items-center justify-center relative overflow-hidden"
+      style={{ backgroundImage: 'url(/onboarding.jpg)' }}
+    >
+      {/* Dark overlay for readability */}
+      <div className="absolute inset-0 bg-black/60 pointer-events-none" />
+
       {/* Immersive Background Orbs */}
       <motion.div 
         animate={{ scale: [1, 1.2, 1], rotate: [0, 90, 0] }}

@@ -37,40 +37,27 @@ export const CustomCursor = () => {
 
   const variants: Variants = {
     default: {
-      x: mousePosition.x - 10,
-      y: mousePosition.y - 10,
       width: 20,
       height: 20,
-      backgroundColor: 'white',
-      mixBlendMode: 'difference',
-      transition: {
-        type: 'spring',
-        stiffness: 1000,
-        damping: 40,
-        mass: 0.1,
-      }
     },
     hover: {
-      x: mousePosition.x - 30,
-      y: mousePosition.y - 30,
       width: 60,
       height: 60,
-      backgroundColor: 'white',
-      mixBlendMode: 'difference',
-      transition: {
-        type: 'spring',
-        stiffness: 1000,
-        damping: 40,
-        mass: 0.1,
-      }
     }
   };
 
   return (
     <motion.div
-      className="fixed top-0 left-0 rounded-full pointer-events-none z-[9999] hidden md:block"
+      className="fixed top-0 left-0 rounded-full pointer-events-none z-[9999] hidden md:block bg-white mix-blend-difference"
+      style={{
+        left: mousePosition.x,
+        top: mousePosition.y,
+        x: '-50%',
+        y: '-50%',
+      }}
       variants={variants as any}
       animate={isHovering ? 'hover' : 'default'}
+      transition={{ type: 'spring', stiffness: 500, damping: 28 }}
     />
   );
 };
