@@ -11,6 +11,7 @@ import { api } from "@/lib/api"
 import { motion, AnimatePresence } from "framer-motion"
 import { toast } from "sonner"
 import { Sidebar } from "@/components/ui/sidebar"
+import { Shared3DBackground } from "@/components/ui/shared-3d-background"
 
 export default function UploadPage() {
   const { user } = useAuthStore()
@@ -69,8 +70,8 @@ export default function UploadPage() {
   if (!user) return null
 
   return (
-    <div className="flex min-h-screen bg-transparent text-white selection:bg-primary/30">
-      
+    <div className="flex min-h-screen bg-transparent text-white selection:bg-primary/30 relative z-0">
+      <Shared3DBackground />
       <Sidebar activeTab="upload" />
 
       {/* Main Content */}
@@ -86,7 +87,7 @@ export default function UploadPage() {
           <AnimatePresence mode="wait">
             {!result ? (
               <motion.div key="upload" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                <GlassCard className="p-8 bg-black/40 backdrop-blur-2xl border border-white/5 rounded-3xl">
+                <GlassCard className="p-8 bg-white/5 backdrop-blur-3xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)] border border-white/10 rounded-3xl">
                   <motion.div 
                     whileHover={{ scale: 1.01 }}
                     className={`border-2 border-dashed rounded-[2rem] p-16 text-center transition-all duration-300 cursor-pointer relative overflow-hidden ${
@@ -151,7 +152,7 @@ export default function UploadPage() {
               </motion.div>
             ) : (
               <motion.div key="result" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}>
-                <GlassCard className="p-12 text-center flex flex-col items-center bg-black/40 backdrop-blur-2xl border border-white/5 rounded-3xl relative overflow-hidden">
+                <GlassCard className="p-12 text-center flex flex-col items-center bg-white/5 backdrop-blur-3xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)] border border-white/10 rounded-3xl relative overflow-hidden">
                   
                   {/* Glowing success background */}
                   <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[300px] h-[300px] bg-primary/20 blur-[80px] rounded-full pointer-events-none" />

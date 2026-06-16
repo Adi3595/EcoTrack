@@ -14,6 +14,7 @@ import { motion } from "framer-motion"
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts"
 import { Sidebar } from "@/components/ui/sidebar"
 import { Skeleton } from "@/components/ui/skeleton"
+import { Shared3DBackground } from "@/components/ui/shared-3d-background"
 
 interface Activity {
   id: string;
@@ -50,7 +51,8 @@ const itemVariants = {
 
 function DashboardSkeleton() {
   return (
-    <div className="flex min-h-screen bg-[#001209]">
+    <div className="flex min-h-screen bg-transparent relative z-0">
+      <Shared3DBackground />
       <Sidebar activeTab="dashboard" />
       <main className="flex-1 p-6 md:p-10 max-w-7xl mx-auto w-full">
         <header className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-10 gap-4 w-full">
@@ -130,8 +132,8 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="flex min-h-screen bg-transparent text-white selection:bg-primary/30">
-      
+    <div className="flex min-h-screen bg-transparent text-white selection:bg-primary/30 relative z-0">
+      <Shared3DBackground />
       <Sidebar activeTab="dashboard" />
 
       {/* Main Content */}
@@ -157,7 +159,7 @@ export default function Dashboard() {
         >
           {/* Main Score Card */}
           <motion.div variants={itemVariants} className="col-span-1 md:col-span-8">
-            <GlassCard className="p-8 flex flex-col md:flex-row items-center gap-8 h-full bg-black/40 backdrop-blur-2xl border border-white/5 rounded-3xl">
+            <GlassCard className="p-8 flex flex-col md:flex-row items-center gap-8 h-full bg-white/5 backdrop-blur-3xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)] border border-white/10 rounded-3xl">
               <motion.div 
                 initial={{ scale: 0 }} 
                 animate={{ scale: 1 }} 
@@ -182,7 +184,7 @@ export default function Dashboard() {
 
           {/* Quick Stats */}
           <motion.div variants={itemVariants} className="col-span-1 md:col-span-4">
-            <GlassCard className="p-8 flex flex-col justify-between h-full bg-gradient-to-br from-white/5 to-transparent backdrop-blur-2xl border border-white/5 rounded-3xl">
+            <GlassCard className="p-8 flex flex-col justify-between h-full bg-gradient-to-br from-white/10 to-transparent backdrop-blur-3xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)] border border-white/10 rounded-3xl">
               <h3 className="text-sm font-bold uppercase tracking-widest text-white/50 mb-6">Emissions Breakdown</h3>
               <div className="space-y-4">
                 <div className="flex items-center justify-between p-4 rounded-2xl bg-black/40 border border-white/5">
@@ -208,7 +210,7 @@ export default function Dashboard() {
 
           {/* Weekly Trends Chart */}
           <motion.div variants={itemVariants} className="col-span-1 md:col-span-12">
-            <GlassCard className="p-8 bg-black/40 backdrop-blur-2xl border border-white/5 rounded-3xl">
+            <GlassCard className="p-8 bg-white/5 backdrop-blur-3xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)] border border-white/10 rounded-3xl">
               <div className="flex items-center justify-between mb-8">
                 <h3 className="text-2xl font-bold">Weekly Emissions Trend</h3>
                 <CarbonChip level="low" className="bg-primary/20 border-primary/50 text-primary animate-pulse">Live Data</CarbonChip>
@@ -243,7 +245,7 @@ export default function Dashboard() {
 
           {/* AI Recommendations */}
           <motion.div variants={itemVariants} className="col-span-1 md:col-span-6">
-            <GlassCard className="p-8 h-full bg-black/40 backdrop-blur-2xl border border-white/5 rounded-3xl">
+            <GlassCard className="p-8 h-full bg-white/5 backdrop-blur-3xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)] border border-white/10 rounded-3xl">
               <div className="flex items-center justify-between mb-8">
                 <h3 className="text-2xl font-bold">AI Insights</h3>
                 <span className="relative flex h-3 w-3">
@@ -272,7 +274,7 @@ export default function Dashboard() {
 
           {/* Recent Activity */}
           <motion.div variants={itemVariants} className="col-span-1 md:col-span-6">
-            <GlassCard className="p-8 h-full bg-black/40 backdrop-blur-2xl border border-white/5 rounded-3xl">
+            <GlassCard className="p-8 h-full bg-white/5 backdrop-blur-3xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)] border border-white/10 rounded-3xl">
               <h3 className="text-2xl font-bold mb-8">Recent Logged Activity</h3>
               <div className="space-y-4">
                 {activities.length === 0 ? (

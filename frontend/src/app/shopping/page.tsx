@@ -10,6 +10,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { toast } from "sonner"
 import { Sidebar } from "@/components/ui/sidebar"
 import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip, BarChart, Bar, XAxis, YAxis } from "recharts"
+import { Shared3DBackground } from "@/components/ui/shared-3d-background"
 
 export default function ShoppingAssistant() {
   const { user } = useAuthStore()
@@ -82,7 +83,8 @@ export default function ShoppingAssistant() {
   const COLORS = ['#95d4b3', '#4d6553', '#003824']
 
   return (
-    <div className="flex min-h-screen bg-transparent text-white selection:bg-primary/30">
+    <div className="flex min-h-screen bg-transparent text-white selection:bg-primary/30 relative z-0">
+      <Shared3DBackground />
       <Sidebar activeTab="shopping" />
       <main className="flex-1 p-6 md:p-10 max-w-7xl mx-auto overflow-y-auto">
         <header className="mb-10 flex items-center gap-4">
@@ -102,7 +104,7 @@ export default function ShoppingAssistant() {
             <AnimatePresence mode="wait">
               {!result ? (
                 <motion.div key="upload" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                  <GlassCard className="p-8 bg-black/40 backdrop-blur-2xl border border-white/5 rounded-3xl">
+                  <GlassCard className="p-8 bg-white/5 backdrop-blur-3xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)] border border-white/10 rounded-3xl">
                     <motion.div 
                       whileHover={{ scale: 1.01 }}
                       className={`border-2 border-dashed rounded-[2rem] p-16 text-center transition-all duration-300 cursor-pointer relative overflow-hidden ${
@@ -138,7 +140,7 @@ export default function ShoppingAssistant() {
                 </motion.div>
               ) : (
                 <motion.div key="result" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-                  <GlassCard className="p-8 bg-black/40 backdrop-blur-2xl border border-white/5 rounded-3xl relative overflow-hidden">
+                  <GlassCard className="p-8 bg-white/5 backdrop-blur-3xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)] border border-white/10 rounded-3xl relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-[60px] pointer-events-none" />
                     
                     <div className="flex items-start justify-between mb-8">
@@ -211,7 +213,7 @@ export default function ShoppingAssistant() {
 
           {/* Analytics Sidebar */}
           <div className="lg:col-span-4 space-y-6">
-            <GlassCard className="p-6 bg-gradient-to-b from-white/5 to-transparent backdrop-blur-2xl border border-white/5 rounded-3xl">
+            <GlassCard className="p-6 bg-gradient-to-b from-white/10 to-transparent backdrop-blur-3xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)] border border-white/10 rounded-3xl">
               <h3 className="text-sm font-bold uppercase tracking-widest text-white/50 mb-6">Shopping Analytics</h3>
               <div className="flex items-end gap-2 mb-8">
                 <span className="text-5xl font-bold text-primary">{analytics?.total_emissions?.toFixed(1) || 0}</span>
@@ -225,7 +227,7 @@ export default function ShoppingAssistant() {
               </div>
             </GlassCard>
 
-            <GlassCard className="p-6 bg-black/40 backdrop-blur-2xl border border-white/5 rounded-3xl">
+            <GlassCard className="p-6 bg-white/5 backdrop-blur-3xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)] border border-white/10 rounded-3xl">
               <h3 className="text-sm font-bold uppercase tracking-widest text-white/50 mb-6">Scan History</h3>
               <div className="space-y-3 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
                 {history.length === 0 ? (

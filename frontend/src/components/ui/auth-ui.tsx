@@ -459,16 +459,19 @@ export function AuthUI({ signInContent = {}, signUpContent = {} }: AuthUIProps) 
         <AuthFormContainer isSignIn={isSignIn} onToggle={toggleForm} />
       </div>
 
-      <div className="hidden md:block relative bg-cover bg-center overflow-hidden">
-        {/* Sign In Background */}
+      <div className="hidden md:block relative overflow-hidden bg-black">
+        {/* Sign In Background - Always at bottom, slow zoom */}
         <div 
-            className={cn("absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-in-out", isSignIn ? "opacity-100" : "opacity-0")}
+            className="absolute inset-0 bg-cover bg-center animate-slow-zoom"
             style={{ backgroundImage: `url(${finalSignInContent.image.src})` }}
         />
-        {/* Sign Up Background */}
+        {/* Sign Up Background - Clip-path circular wipe on top, slow zoom */}
         <div 
-            className={cn("absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-in-out", !isSignIn ? "opacity-100" : "opacity-0")}
-            style={{ backgroundImage: `url(${finalSignUpContent.image.src})` }}
+            className="absolute inset-0 bg-cover bg-center animate-slow-zoom-reverse transition-all duration-[1200ms] ease-[cubic-bezier(0.645,0.045,0.355,1)]"
+            style={{ 
+              backgroundImage: `url(${finalSignUpContent.image.src})`,
+              clipPath: !isSignIn ? 'circle(150% at 50% 50%)' : 'circle(0% at 50% 50%)'
+            }}
         />
 
         <div className="absolute inset-x-0 bottom-0 h-[100px] bg-gradient-to-t from-background to-transparent z-10" />

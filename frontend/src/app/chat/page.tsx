@@ -7,6 +7,8 @@ import Link from "next/link";
 import { useAuthStore } from "@/store/authStore";
 import { useRouter } from "next/navigation";
 import { AnimatedAIChat } from "@/components/ui/animated-ai-chat";
+import { Shared3DBackground } from "@/components/ui/shared-3d-background";
+import { GlassCard } from "@/components/ui/glass-card";
 
 export default function ChatAssistant() {
   const { user, _hasHydrated, logout } = useAuthStore();
@@ -27,7 +29,8 @@ export default function ChatAssistant() {
   if (!_hasHydrated || !user) return null;
 
   return (
-    <div className="flex h-screen bg-[#001209] overflow-hidden">
+    <div className="flex h-screen bg-transparent text-white overflow-hidden relative z-0">
+      <Shared3DBackground />
       {/* Sidebar */}
       <aside className="w-64 bg-surface-container-low/80 backdrop-blur-xl border-r border-outline-variant/30 flex flex-col p-6 z-20 shrink-0 shadow-2xl shadow-black/50">
         <h2 className="text-headline-md font-bold text-on-surface mb-8 tracking-tight text-primary">EcoTrack</h2>
@@ -54,9 +57,9 @@ export default function ChatAssistant() {
       </aside>
 
       {/* Main Chat Area */}
-      <main className="flex-1 flex flex-col relative h-full">
+      <GlassCard className="flex-1 flex flex-col min-h-0 bg-white/5 backdrop-blur-3xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)] border border-white/10 rounded-3xl overflow-hidden m-6">
         {/* Header */}
-        <header className="h-16 border-b border-primary/10 flex items-center px-8 bg-[#00180d]/60 backdrop-blur-md z-10 shrink-0 absolute top-0 w-full">
+        <header className="h-16 border-b border-primary/10 flex items-center px-8 bg-[#00180d]/60 backdrop-blur-md z-10 shrink-0">
           <h1 className="text-headline-sm font-semibold flex items-center gap-2 text-white">
             <Bot className="h-5 w-5 text-primary" /> AI Sustainability Coach
           </h1>
@@ -66,7 +69,7 @@ export default function ChatAssistant() {
         <div className="flex-1 h-full w-full pt-16">
           <AnimatedAIChat />
         </div>
-      </main>
+      </GlassCard>
     </div>
   );
 }

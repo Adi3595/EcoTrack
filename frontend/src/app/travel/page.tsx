@@ -11,6 +11,7 @@ import { Sidebar } from "@/components/ui/sidebar"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import dynamic from 'next/dynamic'
+import { Shared3DBackground } from "@/components/ui/shared-3d-background"
 
 // Dynamically import Leaflet map to avoid SSR issues
 const DynamicMap = dynamic(() => import('@/components/ui/travel-map'), { ssr: false, loading: () => <div className="h-[500px] w-full bg-white/5 animate-pulse rounded-3xl" /> })
@@ -119,7 +120,8 @@ export default function TravelTracker() {
   if (!_hasHydrated || !user) return null
 
   return (
-    <div className="flex min-h-screen bg-transparent text-white selection:bg-primary/30">
+    <div className="flex min-h-screen bg-transparent text-white selection:bg-primary/30 relative z-0">
+      <Shared3DBackground />
       <Sidebar activeTab="travel" />
       <main className="flex-1 p-6 md:p-10 max-w-7xl mx-auto overflow-y-auto">
         <header className="mb-10 flex items-center justify-between">
@@ -138,7 +140,7 @@ export default function TravelTracker() {
           
           {/* Main Map Area */}
           <div className="lg:col-span-8 relative">
-            <GlassCard className="p-2 bg-black/40 backdrop-blur-2xl border border-white/5 rounded-[2.5rem] overflow-hidden relative">
+            <GlassCard className="p-2 bg-white/5 backdrop-blur-3xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)] border border-white/10 rounded-[2.5rem] overflow-hidden relative">
               <div className="absolute top-6 left-6 z-10">
                 <div className="bg-black/60 backdrop-blur-md border border-white/10 px-4 py-2 rounded-full flex items-center gap-2 shadow-lg">
                   <span className={`w-3 h-3 rounded-full ${isTracking ? 'bg-red-500 animate-pulse shadow-[0_0_10px_rgba(239,68,68,0.8)]' : 'bg-white/20'}`} />
@@ -175,7 +177,7 @@ export default function TravelTracker() {
 
           {/* Side Panel */}
           <div className="lg:col-span-4 space-y-6">
-            <GlassCard className="p-6 bg-black/40 backdrop-blur-2xl border border-white/5 rounded-3xl">
+            <GlassCard className="p-6 bg-white/5 backdrop-blur-3xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)] border border-white/10 rounded-3xl">
               <h3 className="text-sm font-bold uppercase tracking-widest text-white/50 mb-6">Transport Mode</h3>
               <div className="grid grid-cols-2 gap-3 mb-4">
                 {['Gas Car', 'EV', 'Bus', 'Bike'].map(v => (
@@ -199,7 +201,7 @@ export default function TravelTracker() {
               </div>
             </GlassCard>
 
-            <GlassCard className="p-6 bg-gradient-to-b from-white/5 to-transparent backdrop-blur-2xl border border-white/5 rounded-3xl">
+            <GlassCard className="p-6 bg-gradient-to-b from-white/10 to-transparent backdrop-blur-3xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)] border border-white/10 rounded-3xl">
               <h3 className="text-sm font-bold uppercase tracking-widest text-white/50 mb-6">Travel Analytics</h3>
               <div className="space-y-4">
                 <div className="flex justify-between items-center p-4 bg-black/40 rounded-2xl border border-white/5">
@@ -214,7 +216,7 @@ export default function TravelTracker() {
             </GlassCard>
 
             {/* Manual Calculator */}
-            <GlassCard className="p-6 bg-black/40 backdrop-blur-2xl border border-white/5 rounded-3xl mt-6">
+            <GlassCard className="p-6 bg-white/5 backdrop-blur-3xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)] border border-white/10 rounded-3xl mt-6">
               <h3 className="text-sm font-bold uppercase tracking-widest text-white/50 mb-6">Manual Calculator</h3>
               <div className="space-y-4">
                 <div>
