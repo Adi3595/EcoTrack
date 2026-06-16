@@ -55,7 +55,7 @@ export function Sidebar({ activeTab }: SidebarProps) {
   }, [])
 
   return (
-    <aside className="w-64 bg-[#000a05]/80 backdrop-blur-2xl border-r border-white/5 hidden md:flex flex-col p-6 z-10 shrink-0 relative">
+    <aside className="w-64 bg-white/5 backdrop-blur-3xl border-r border-white/10 shadow-[inset_-1px_0_1px_rgba(255,255,255,0.05)] hidden md:flex flex-col p-6 z-10 shrink-0 relative">
       <div className="flex justify-between items-center mb-8">
         <h2 className="text-2xl font-bold text-white tracking-tight">
           EcoTrack <span className="text-primary drop-shadow-[0_0_10px_rgba(149,212,179,0.5)]">AI</span>

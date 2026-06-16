@@ -432,6 +432,8 @@ const defaultSignUpContent = {
     }
 };
 
+import { motion, AnimatePresence } from "framer-motion";
+
 export function AuthUI({ signInContent = {}, signUpContent = {} }: AuthUIProps) {
   const [isSignIn, setIsSignIn] = useState(true);
   const toggleForm = () => setIsSignIn((prev) => !prev);
@@ -448,48 +450,55 @@ export function AuthUI({ signInContent = {}, signUpContent = {} }: AuthUIProps) 
   const currentContent = isSignIn ? finalSignInContent : finalSignUpContent;
 
   return (
-    <div className="w-full min-h-screen md:grid md:grid-cols-2">
+    <div className="relative w-full h-screen overflow-hidden bg-black [perspective:2000px]">
       <style>{`
         input[type="password"]::-ms-reveal,
         input[type="password"]::-ms-clear {
           display: none;
         }
       `}</style>
-      <div className="flex h-screen items-center justify-center p-6 md:h-auto md:p-0 md:py-12 bg-background">
-        <AuthFormContainer isSignIn={isSignIn} onToggle={toggleForm} />
-      </div>
 
-      <div className="hidden md:block relative overflow-hidden bg-black">
-        {/* Sign In Background - Always at bottom, slow zoom */}
-        <div 
-            className="absolute inset-0 bg-cover bg-center animate-slow-zoom"
-            style={{ backgroundImage: `url(${finalSignInContent.image.src})` }}
-        />
-        {/* Sign Up Background - Clip-path circular wipe on top, slow zoom */}
-        <div 
-            className="absolute inset-0 bg-cover bg-center animate-slow-zoom-reverse transition-all duration-[1200ms] ease-[cubic-bezier(0.645,0.045,0.355,1)]"
-            style={{ 
-              backgroundImage: `url(${finalSignUpContent.image.src})`,
-              clipPath: !isSignIn ? 'circle(150% at 50% 50%)' : 'circle(0% at 50% 50%)'
-            }}
-        />
+      {/* Crossfading Backgrounds with slow zoom */}
+      <div 
+        className={cn("absolute inset-0 bg-cover bg-center animate-slow-zoom transition-opacity duration-1000 ease-in-out", isSignIn ? "opacity-90" : "opacity-0")}
+        style={{ backgroundImage: `url(${finalSignInContent.image.src})` }}
+      />
+      <div 
+        className={cn("absolute inset-0 bg-cover bg-center animate-slow-zoom transition-opacity duration-1000 ease-in-out", !isSignIn ? "opacity-90" : "opacity-0")}
+        style={{ backgroundImage: `url(${finalSignUpContent.image.src})` }}
+      />
 
-        <div className="absolute inset-x-0 bottom-0 h-[100px] bg-gradient-to-t from-background to-transparent z-10" />
-        <div className="absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-background via-background/80 to-transparent z-10" />
-        
-        <div className="relative z-20 flex h-full flex-col items-center justify-end p-2 pb-6">
-            <blockquote className="space-y-2 text-center text-foreground">
-              <p className="text-lg font-medium text-white shadow-black drop-shadow-lg">
+      {/* Optional Dark Overlay for Readability */}
+      <div className="absolute inset-0 bg-black/20 z-0" />
+
+      {/* Glassy Form Container with 3D Flip */}
+      <div className="relative z-10 flex h-full items-center justify-center p-6 [perspective:2000px]">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={isSignIn ? "signin" : "signup"}
+            initial={{ rotateY: 90, opacity: 0, scale: 0.9 }}
+            animate={{ rotateY: 0, opacity: 1, scale: 1 }}
+            exit={{ rotateY: -90, opacity: 0, scale: 0.9 }}
+            transition={{ duration: 0.6, ease: [0.645, 0.045, 0.355, 1] }}
+            className="w-full max-w-md bg-white/5 backdrop-blur-3xl shadow-[0_8px_32px_rgba(0,0,0,0.3),inset_0_1px_1px_rgba(255,255,255,0.1)] border border-white/10 p-8 rounded-[2rem]"
+            style={{ transformStyle: "preserve-3d" }}
+          >
+            <AuthFormContainer isSignIn={isSignIn} onToggle={toggleForm} />
+            
+            <div className="mt-8 text-center border-t border-white/10 pt-6">
+              <blockquote className="space-y-2 text-center text-white">
+                <p className="text-sm font-medium drop-shadow-lg">
                 “<Typewriter
                     key={currentContent.quote.text}
                     text={currentContent.quote.text}
                     speed={60}
                   />”
               </p>
-              <cite className="block text-sm font-light text-white/80 not-italic drop-shadow-md">
+              <cite className="block text-xs font-light text-white/70 not-italic">
                   — {currentContent.quote.author}
               </cite>
             </blockquote>
+          </div>
         </div>
       </div>
     </div>

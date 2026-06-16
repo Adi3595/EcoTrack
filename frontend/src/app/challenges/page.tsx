@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import { toast } from "sonner"
 import { Sidebar } from "@/components/ui/sidebar"
+import { Shared3DBackground } from "@/components/ui/shared-3d-background"
 
 import { useState, useRef, useEffect } from "react"
 import { api } from "@/lib/api"
@@ -93,8 +94,8 @@ export default function ChallengesPage() {
   if (!user) return null
 
   return (
-    <div className="flex min-h-screen bg-transparent text-white selection:bg-primary/30">
-      
+    <div className="flex min-h-screen bg-transparent text-white selection:bg-primary/30 relative z-0">
+      <Shared3DBackground />
       <Sidebar activeTab="challenges" />
 
       {/* Main Content */}
@@ -117,7 +118,7 @@ export default function ChallengesPage() {
           
           {/* Main Leaderboard */}
           <motion.div variants={itemVariants} className="lg:col-span-2 space-y-6">
-            <GlassCard className="p-8 bg-black/40 backdrop-blur-2xl border border-white/5 rounded-3xl h-full">
+            <GlassCard className="p-8 bg-white/5 backdrop-blur-3xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)] border border-white/10 rounded-3xl h-full">
               <div className="flex items-center justify-between mb-8">
                 <h3 className="text-2xl font-bold flex items-center gap-3">
                   <div className="bg-primary/20 p-2.5 rounded-xl"><Trophy className="text-primary h-6 w-6" /></div>
@@ -169,7 +170,7 @@ export default function ChallengesPage() {
               const progressPercent = (c.current_progress / c.max_progress) * 100;
 
               return (
-                <GlassCard key={c.id} className="p-6 bg-white/5 backdrop-blur-2xl border border-white/5 hover:border-primary/50 hover:bg-white/10 transition-all hover:shadow-[0_0_30px_rgba(149,212,179,0.1)] rounded-3xl">
+                <GlassCard key={c.id} className="p-6 bg-white/5 backdrop-blur-3xl border border-white/10 hover:border-primary/50 hover:bg-white/10 transition-all hover:shadow-[0_0_30px_rgba(149,212,179,0.1)] rounded-3xl">
                   <div className="flex gap-4 mb-4">
                     <div className="h-12 w-12 rounded-2xl bg-black/50 border border-white/5 flex items-center justify-center shrink-0">
                       <Trophy className="text-primary h-6 w-6" />
@@ -361,7 +362,7 @@ function DailyTasksSection() {
         }
 
         return (
-          <GlassCard key={task.id} className={`p-5 backdrop-blur-2xl border transition-all rounded-3xl ${task.completed ? 'bg-black/40 border-white/5 opacity-50 cursor-not-allowed' : 'bg-primary/5 border-primary/20 hover:border-primary/50 shadow-[0_0_20px_rgba(149,212,179,0.05)]'}`}>
+          <GlassCard key={task.id} className={`p-5 backdrop-blur-3xl border transition-all rounded-3xl ${task.completed ? 'bg-white/5 border-white/5 opacity-50 cursor-not-allowed' : 'bg-primary/5 border-white/10 hover:border-primary/50 shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)]'}`}>
             <div className="flex items-center justify-between">
               <div>
                 <h4 className={`text-lg font-bold mb-1 leading-tight ${task.completed ? 'text-white/50 line-through' : 'text-white'}`}>{task.title}</h4>

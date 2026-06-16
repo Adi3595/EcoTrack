@@ -66,7 +66,7 @@ export default function ChatAssistant() {
         </header>
 
         {/* Dynamic Chat Component */}
-        <div className="flex-1 h-full w-full pt-16">
+        <div className="flex-1 min-h-0 w-full relative">
           <AnimatedAIChat />
         </div>
       </GlassCard>

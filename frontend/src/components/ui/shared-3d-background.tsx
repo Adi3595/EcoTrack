@@ -15,6 +15,9 @@ export function Shared3DBackground() {
     const xToFog = gsap.quickTo(fogRef.current, "x", { duration: 0.8, ease: "power3.out" });
     const yToFog = gsap.quickTo(fogRef.current, "y", { duration: 0.8, ease: "power3.out" });
 
+    const xToParticles = gsap.quickTo(".dashboard-particles", "x", { duration: 0.5, ease: "power3.out" });
+    const yToParticles = gsap.quickTo(".dashboard-particles", "y", { duration: 0.5, ease: "power3.out" });
+
     const handleMouseMove = (e: MouseEvent) => {
       const x = (e.clientX / window.innerWidth - 0.5) * 2;
       const y = (e.clientY / window.innerHeight - 0.5) * 2;
@@ -26,6 +29,10 @@ export function Shared3DBackground() {
       // Fog moves more aggressively
       xToFog(x * 10);
       yToFog(y * 10);
+
+      // Particles move fastest (closest to camera)
+      xToParticles(x * 30);
+      yToParticles(y * 30);
     };
 
     window.addEventListener("mousemove", handleMouseMove);
@@ -61,6 +68,18 @@ export function Shared3DBackground() {
             <div className="dashboard-fog absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(149,212,179,0.15)_0%,_transparent_60%)]" />
           </div>
         </div>
+
+        {/* 3D Floating Particles (CSS base64 noise/dots for depth) */}
+        <div className="dashboard-particles absolute inset-[-10%] w-[120%] h-[120%] pointer-events-none opacity-20 will-change-transform" style={{
+          backgroundImage: 'radial-gradient(rgba(255,255,255,0.4) 1px, transparent 1px)',
+          backgroundSize: '40px 40px',
+          backgroundPosition: '0 0'
+        }} />
+        <div className="dashboard-particles absolute inset-[-10%] w-[120%] h-[120%] pointer-events-none opacity-10 will-change-transform scale-150" style={{
+          backgroundImage: 'radial-gradient(rgba(149,212,179,0.5) 2px, transparent 2px)',
+          backgroundSize: '60px 60px',
+          backgroundPosition: '20px 20px'
+        }} />
       </div>
     </>
   );
