@@ -1,422 +1,64 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from 'react';
-import * as THREE from 'three';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
-import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
-import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Activity, Leaf, Bot, Users, Trophy, Globe, Zap, ArrowRight, ShieldCheck } from "lucide-react";
 import { Magnetic } from '@/components/ui/magnetic';
 import { TextReveal } from '@/components/ui/text-reveal';
 
-gsap.registerPlugin(ScrollTrigger);
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 export const HorizonHeroSection = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const bgRef = useRef<HTMLDivElement>(null);
+  const fgRef = useRef<HTMLDivElement>(null);
+  
   const titleRefs = useRef<(HTMLHeadingElement | null)[]>([]);
   const subtitleRefs = useRef<(HTMLDivElement | null)[]>([]);
   const scrollProgressRef = useRef<HTMLDivElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
-
-  const smoothCameraPos = useRef({ x: 0, y: 30, z: 100 });
 
   const [scrollProgress, setScrollProgress] = useState(0);
   const [currentSection, setCurrentSection] = useState(0);
   const [isReady, setIsReady] = useState(false);
   const totalSections = 2; // 0, 1, 2 = 3 total sections
 
-  const threeRefs = useRef<any>({
-    scene: null,
-    camera: null,
-    renderer: null,
-    composer: null,
-    stars: [],
-    nebula: null,
-    mountains: [],
-    animationId: null,
-    targetCameraX: 0,
-    targetCameraY: 30,
-    targetCameraZ: 300,
-    locations: []
-  });
+  // GSAP Mouse Tracking 3D Parallax
+  useGSAP(() => {
+    setIsReady(true);
+    
+    // We create quickTo functions for buttery smooth 60fps tracking
+    const xToBg = gsap.quickTo(bgRef.current, "x", { duration: 0.8, ease: "power3.out" });
+    const yToBg = gsap.quickTo(bgRef.current, "y", { duration: 0.8, ease: "power3.out" });
+    
+    const xToFg = gsap.quickTo(fgRef.current, "x", { duration: 0.8, ease: "power3.out" });
+    const yToFg = gsap.quickTo(fgRef.current, "y", { duration: 0.8, ease: "power3.out" });
 
-  // Initialize Three.js
-  useEffect(() => {
-    const initThree = () => {
-      const refs = threeRefs.current;
+    const onMouseMove = (e: MouseEvent) => {
+      const { innerWidth, innerHeight } = window;
+      // Normalize to -1 to 1
+      const x = (e.clientX / innerWidth) * 2 - 1;
+      const y = (e.clientY / innerHeight) * 2 - 1;
 
-      // Scene setup
-      refs.scene = new THREE.Scene();
-      refs.scene.fog = new THREE.FogExp2(0x000000, 0.00025);
-
-      // Camera
-      refs.camera = new THREE.PerspectiveCamera(
-        75,
-        window.innerWidth / window.innerHeight,
-        0.1,
-        2000
-      );
-      refs.camera.position.z = 100;
-      refs.camera.position.y = 20;
-
-      // Renderer
-      refs.renderer = new THREE.WebGLRenderer({
-        canvas: canvasRef.current!,
-        antialias: true,
-        alpha: true
-      });
-      refs.renderer.setSize(window.innerWidth, window.innerHeight);
-      refs.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      refs.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-      refs.renderer.toneMappingExposure = 0.5;
-
-      // Post-processing
-      refs.composer = new EffectComposer(refs.renderer);
-      const renderPass = new RenderPass(refs.scene, refs.camera);
-      refs.composer.addPass(renderPass);
-
-      const bloomPass = new UnrealBloomPass(
-        new THREE.Vector2(window.innerWidth, window.innerHeight),
-        0.8,
-        0.4,
-        0.85
-      );
-      refs.composer.addPass(bloomPass);
-
-      // Create scene elements
-      createStarField();
-      createNebula();
-      createLights();
-      createMountains();
-      createAtmosphere();
-      getLocation();
-
-      // Start animation
-      animate();
-
-      setIsReady(true);
+      // Move background deeply opposite for parallax
+      xToBg(x * -50);
+      yToBg(y * -50);
+      
+      // Move foreground slightly with mouse to pop out
+      xToFg(x * 20);
+      yToFg(y * 20);
     };
 
-    const createStarField = () => {
-      const refs = threeRefs.current;
-      const starCount = 5000;
+    window.addEventListener("mousemove", onMouseMove);
+    return () => window.removeEventListener("mousemove", onMouseMove);
+  }, { scope: containerRef });
 
-      for (let i = 0; i < 3; i++) {
-        const geometry = new THREE.BufferGeometry();
-        const positions = new Float32Array(starCount * 3);
-        const colors = new Float32Array(starCount * 3);
-        const sizes = new Float32Array(starCount);
-
-        for (let j = 0; j < starCount; j++) {
-          const radius = 200 + Math.random() * 800;
-          const theta = Math.random() * Math.PI * 2;
-          const phi = Math.acos(Math.random() * 2 - 1);
-
-          positions[j * 3] = radius * Math.sin(phi) * Math.cos(theta);
-          positions[j * 3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
-          positions[j * 3 + 2] = radius * Math.cos(phi);
-
-          const color = new THREE.Color();
-          const colorChoice = Math.random();
-          if (colorChoice < 0.7) {
-            color.setHSL(0, 0, 0.8 + Math.random() * 0.2); // White-ish
-          } else if (colorChoice < 0.9) {
-            color.setHSL(0.4, 0.5, 0.8); // Primary (Green-ish)
-          } else {
-            color.setHSL(0.2, 0.5, 0.8); // Yellow-ish
-          }
-
-          colors[j * 3] = color.r;
-          colors[j * 3 + 1] = color.g;
-          colors[j * 3 + 2] = color.b;
-
-          sizes[j] = Math.random() * 2 + 0.5;
-        }
-
-        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-        geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-        geometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
-
-        const material = new THREE.ShaderMaterial({
-          uniforms: {
-            time: { value: 0 },
-            depth: { value: i }
-          },
-          vertexShader: `
-            attribute float size;
-            attribute vec3 color;
-            varying vec3 vColor;
-            uniform float time;
-            uniform float depth;
-            
-            void main() {
-              vColor = color;
-              vec3 pos = position;
-              
-              float angle = time * 0.05 * (1.0 - depth * 0.3);
-              mat2 rot = mat2(cos(angle), -sin(angle), sin(angle), cos(angle));
-              pos.xy = rot * pos.xy;
-              
-              vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
-              gl_PointSize = size * (300.0 / -mvPosition.z);
-              gl_Position = projectionMatrix * mvPosition;
-            }
-          `,
-          fragmentShader: `
-            varying vec3 vColor;
-            
-            void main() {
-              float dist = length(gl_PointCoord - vec2(0.5));
-              if (dist > 0.5) discard;
-              
-              float opacity = 1.0 - smoothstep(0.0, 0.5, dist);
-              gl_FragColor = vec4(vColor, opacity);
-            }
-          `,
-          transparent: true,
-          blending: THREE.AdditiveBlending,
-          depthWrite: false
-        });
-
-        const stars = new THREE.Points(geometry, material);
-        refs.scene.add(stars);
-        refs.stars.push(stars);
-      }
-    };
-
-    const createNebula = () => {
-      const refs = threeRefs.current;
-      const geometry = new THREE.PlaneGeometry(8000, 4000, 100, 100);
-      const material = new THREE.ShaderMaterial({
-        uniforms: {
-          time: { value: 0 },
-          color1: { value: new THREE.Color(0x053121) },
-          color2: { value: new THREE.Color(0x95d4b3) },
-          opacity: { value: 0.3 }
-        },
-        vertexShader: `
-          varying vec2 vUv;
-          varying float vElevation;
-          uniform float time;
-          void main() {
-            vUv = uv;
-            vec3 pos = position;
-            float elevation = sin(pos.x * 0.01 + time) * cos(pos.y * 0.01 + time) * 20.0;
-            pos.z += elevation;
-            vElevation = elevation;
-            gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
-          }
-        `,
-        fragmentShader: `
-          uniform vec3 color1;
-          uniform vec3 color2;
-          uniform float opacity;
-          uniform float time;
-          varying vec2 vUv;
-          varying float vElevation;
-          void main() {
-            float mixFactor = sin(vUv.x * 10.0 + time) * cos(vUv.y * 10.0 + time);
-            vec3 color = mix(color1, color2, mixFactor * 0.5 + 0.5);
-            float alpha = opacity * (1.0 - length(vUv - 0.5) * 2.0);
-            alpha *= 1.0 + vElevation * 0.01;
-            gl_FragColor = vec4(color, alpha);
-          }
-        `,
-        transparent: true,
-        blending: THREE.AdditiveBlending,
-        side: THREE.DoubleSide,
-        depthWrite: false
-      });
-
-      const nebula = new THREE.Mesh(geometry, material);
-      nebula.position.z = -1050;
-      nebula.rotation.x = 0;
-      refs.scene.add(nebula);
-      refs.nebula = nebula;
-    };
-
-    const createLights = () => {
-      const refs = threeRefs.current;
-      const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
-      refs.scene.add(ambientLight);
-
-      const mainLight = new THREE.DirectionalLight(0x95d4b3, 2);
-      mainLight.position.set(100, 200, 50);
-      refs.scene.add(mainLight);
-
-      const fillLight = new THREE.DirectionalLight(0x0a192f, 3);
-      fillLight.position.set(-100, 100, -100);
-      refs.scene.add(fillLight);
-    };
-
-    const createMountains = () => {
-      const refs = threeRefs.current;
-
-      const geometry = new THREE.PlaneGeometry(4000, 4000, 200, 200);
-      geometry.rotateX(-Math.PI / 2);
-
-      const positionAttribute = geometry.attributes.position;
-      for (let i = 0; i < positionAttribute.count; i++) {
-        const x = positionAttribute.getX(i);
-        const z = positionAttribute.getZ(i);
-
-        let y = Math.sin(x * 0.003) * Math.cos(z * 0.003) * 150;
-        y += Math.sin(x * 0.01 + z * 0.02) * 50;
-        y += Math.sin(x * 0.04) * Math.cos(z * 0.05) * 15;
-
-        const distFromCenter = Math.abs(x);
-        const valleyFactor = Math.min(1, distFromCenter / 600);
-
-        y = (y * valleyFactor) - 100;
-
-        positionAttribute.setY(i, y);
-      }
-
-      geometry.computeVertexNormals();
-
-      const material = new THREE.MeshStandardMaterial({
-        color: 0x053121,
-        roughness: 0.8,
-        metalness: 0.1,
-        flatShading: true,
-      });
-
-      const terrain = new THREE.Mesh(geometry, material);
-      terrain.position.z = -500;
-      refs.scene.add(terrain);
-      refs.mountains = [terrain];
-    };
-
-    const createAtmosphere = () => {
-      const refs = threeRefs.current;
-      const geometry = new THREE.SphereGeometry(600, 32, 32);
-      const material = new THREE.ShaderMaterial({
-        uniforms: {
-          time: { value: 0 }
-        },
-        vertexShader: `
-          varying vec3 vNormal;
-          varying vec3 vPosition;
-          void main() {
-            vNormal = normalize(normalMatrix * normal);
-            vPosition = position;
-            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-          }
-        `,
-        fragmentShader: `
-          varying vec3 vNormal;
-          varying vec3 vPosition;
-          uniform float time;
-          void main() {
-            float intensity = pow(0.7 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 2.0);
-            vec3 atmosphere = vec3(0.0, 0.2, 0.1) * intensity;
-            float pulse = sin(time * 2.0) * 0.1 + 0.9;
-            atmosphere *= pulse;
-            gl_FragColor = vec4(atmosphere, intensity * 0.25);
-          }
-        `,
-        side: THREE.BackSide,
-        blending: THREE.AdditiveBlending,
-        transparent: true
-      });
-
-      const atmosphere = new THREE.Mesh(geometry, material);
-      refs.scene.add(atmosphere);
-    };
-
-    const animate = () => {
-      const refs = threeRefs.current;
-      refs.animationId = requestAnimationFrame(animate);
-
-      const time = Date.now() * 0.001;
-
-      refs.stars.forEach((starField: any) => {
-        if (starField.material.uniforms) {
-          starField.material.uniforms.time.value = time;
-        }
-      });
-
-      if (refs.nebula && refs.nebula.material.uniforms) {
-        refs.nebula.material.uniforms.time.value = time * 0.5;
-      }
-
-      if (refs.camera && refs.targetCameraX !== undefined) {
-        const smoothingFactor = 0.05;
-        smoothCameraPos.current.x += (refs.targetCameraX - smoothCameraPos.current.x) * smoothingFactor;
-        smoothCameraPos.current.y += (refs.targetCameraY - smoothCameraPos.current.y) * smoothingFactor;
-        smoothCameraPos.current.z += (refs.targetCameraZ - smoothCameraPos.current.z) * smoothingFactor;
-
-        const floatX = Math.sin(time * 0.1) * 2;
-        const floatY = Math.cos(time * 0.15) * 1;
-
-        refs.camera.position.x = smoothCameraPos.current.x + floatX;
-        refs.camera.position.y = smoothCameraPos.current.y + floatY;
-        refs.camera.position.z = smoothCameraPos.current.z;
-        refs.camera.lookAt(0, 10, -600);
-      }
-
-      refs.mountains.forEach((terrain: any) => {
-        terrain.position.z = -1000 + (time * 50) % 500; // Fly forward effect
-      });
-
-      if (refs.composer) {
-        refs.composer.render();
-      }
-    };
-
-    initThree();
-
-    const handleResize = () => {
-      const refs = threeRefs.current;
-      if (refs.camera && refs.renderer && refs.composer) {
-        refs.camera.aspect = window.innerWidth / window.innerHeight;
-        refs.camera.updateProjectionMatrix();
-        refs.renderer.setSize(window.innerWidth, window.innerHeight);
-        refs.composer.setSize(window.innerWidth, window.innerHeight);
-      }
-    };
-
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      const refs = threeRefs.current;
-      if (refs.animationId) cancelAnimationFrame(refs.animationId);
-      window.removeEventListener('resize', handleResize);
-
-      refs.stars.forEach((starField: any) => {
-        starField.geometry.dispose();
-        starField.material.dispose();
-      });
-
-      refs.mountains.forEach((mountain: any) => {
-        mountain.geometry.dispose();
-        mountain.material.dispose();
-      });
-
-      if (refs.nebula) {
-        refs.nebula.geometry.dispose();
-        refs.nebula.material.dispose();
-      }
-
-      if (refs.renderer) refs.renderer.dispose();
-    };
-  }, []);
-
-  const getLocation = () => {
-    const refs = threeRefs.current;
-    const locations: number[] = [];
-    refs.mountains.forEach((mountain: any, i: number) => {
-      locations[i] = mountain.position.z
-    })
-    refs.locations = locations
-  }
-
-  // GSAP Animations
-  useEffect(() => {
+  // Entrance Animations
+  useGSAP(() => {
     if (!isReady) return;
 
     gsap.set([menuRef.current, ...titleRefs.current, ...subtitleRefs.current, scrollProgressRef.current], {
@@ -482,34 +124,15 @@ export const HorizonHeroSection = () => {
       setScrollProgress(progress);
       const newSection = Math.floor(progress * totalSections);
       setCurrentSection(newSection);
-
-      const refs = threeRefs.current;
-
-      const totalProgress = progress * totalSections;
-      const sectionProgress = totalProgress % 1;
-
-      const cameraPositions = [
-        { x: 0, y: 30, z: 300 },
-        { x: 0, y: 40, z: -50 },
-        { x: 0, y: 50, z: -700 }
-      ];
-
-      const currentPos = cameraPositions[newSection] || cameraPositions[0];
-      const nextPos = cameraPositions[newSection + 1] || currentPos;
-
-      refs.targetCameraX = currentPos.x + (nextPos.x - currentPos.x) * sectionProgress;
-      refs.targetCameraY = currentPos.y + (nextPos.y - currentPos.y) * sectionProgress;
-      refs.targetCameraZ = currentPos.z + (nextPos.z - currentPos.z) * sectionProgress;
-
-      refs.mountains.forEach((terrain: any) => {
-        if (progress > 0.7) {
-          terrain.position.y = -600000; // Hide when fully scrolled down
-        } else {
-          terrain.position.y = 0;
-        }
-      });
-      if (refs.nebula) {
-        refs.nebula.position.z = -1050 + progress * 500;
+      
+      // We also apply a slight vertical shift to the background based on scroll progress
+      // to give an extra sense of travel
+      if (bgRef.current) {
+        gsap.to(bgRef.current, {
+          yPercent: progress * 15,
+          duration: 0.5,
+          ease: "power2.out"
+        });
       }
     };
 
@@ -539,43 +162,59 @@ export const HorizonHeroSection = () => {
   ];
 
   return (
-    <div ref={containerRef} className="relative w-full text-white bg-[#001209] font-sans selection:bg-primary/30">
+    <div ref={containerRef} className="relative w-full text-white bg-black font-sans selection:bg-primary/30">
 
       {/* 3D Scroll Experience Container */}
       <div className="relative w-full h-[300vh]">
-        {/* Fixed Canvas */}
-        <canvas ref={canvasRef} className="fixed inset-0 w-full h-full pointer-events-none z-0" />
+        
+        {/* Fixed 3D Image Parallax Background */}
+        <div className="fixed inset-[-10%] w-[120%] h-[120%] z-0 pointer-events-none overflow-hidden">
+          <div 
+            ref={bgRef}
+            className="absolute inset-0"
+            style={{
+              backgroundImage: "url('/bg-landscape.png')",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              transformOrigin: "center center"
+            }}
+          >
+            {/* Cinematic Gradient Overlays to blend the image into the page */}
+            <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/10 to-black/80" />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-black/60" />
+          </div>
+        </div>
 
         {/* Side menu */}
         <div ref={menuRef} className="fixed left-8 top-1/2 -translate-y-1/2 flex flex-col items-center gap-12 z-20 invisible">
-          <div className="flex flex-col gap-1.5 cursor-pointer opacity-70 hover:opacity-100 transition-opacity">
+          <div className="flex flex-col gap-1.5 cursor-pointer opacity-70 hover:opacity-100 transition-opacity drop-shadow-xl">
             <span className="w-6 h-px bg-white block"></span>
             <span className="w-6 h-px bg-white block"></span>
             <span className="w-4 h-px bg-white block"></span>
           </div>
-          <div className="rotate-180 [writing-mode:vertical-rl] tracking-[0.5em] text-xs font-semibold opacity-50">
+          <div className="rotate-180 [writing-mode:vertical-rl] tracking-[0.5em] text-xs font-semibold opacity-80 drop-shadow-xl">
             CLIMATE
           </div>
         </div>
 
         {/* Scroll progress indicator */}
         <div ref={scrollProgressRef} className="fixed right-8 top-1/2 -translate-y-1/2 flex flex-col items-center gap-6 z-20 invisible">
-          <div className="rotate-180 [writing-mode:vertical-rl] tracking-widest text-[10px] font-bold opacity-50">
+          <div className="rotate-180 [writing-mode:vertical-rl] tracking-widest text-[10px] font-bold opacity-80 drop-shadow-xl">
             SCROLL
           </div>
-          <div className="w-px h-32 bg-white/20 relative">
+          <div className="w-px h-32 bg-white/30 relative drop-shadow-xl">
             <div
-              className="absolute top-0 left-0 w-full bg-primary transition-all duration-300"
+              className="absolute top-0 left-0 w-full bg-primary transition-all duration-300 shadow-[0_0_10px_rgba(149,212,179,0.8)]"
               style={{ height: `${scrollProgress * 100}%` }}
             />
           </div>
-          <div className="text-xs font-mono opacity-70">
+          <div className="text-xs font-mono opacity-90 drop-shadow-xl font-bold">
             {String(currentSection + 1).padStart(2, '0')} / {String(totalSections + 1).padStart(2, '0')}
           </div>
         </div>
 
         {/* Scroll Sections Overlay */}
-        <div className="relative z-10 pointer-events-none">
+        <div ref={fgRef} className="relative z-10 pointer-events-none">
           {[...Array(3)].map((_, i) => (
             <section key={i} className="h-screen w-full flex flex-col items-center justify-center text-center px-6">
               <motion.h1 
@@ -584,7 +223,7 @@ export const HorizonHeroSection = () => {
                 whileInView={{ y: 0, opacity: 1 }}
                 viewport={{ once: true, margin: "-10%" }}
                 transition={{ duration: 1.2, ease: [0.76, 0, 0.24, 1], delay: 0.1 }}
-                className="text-6xl md:text-[120px] font-extrabold tracking-tighter leading-none mb-6 flex drop-shadow-2xl"
+                className="text-6xl md:text-[120px] font-extrabold tracking-tighter leading-none mb-6 flex drop-shadow-[0_0_40px_rgba(0,0,0,0.8)]"
               >
                 <TextReveal text={titles[i]} delay={0.1 * i} />
               </motion.h1>
@@ -597,11 +236,11 @@ export const HorizonHeroSection = () => {
                 transition={{ duration: 1.2, ease: [0.76, 0, 0.24, 1], delay: 0.3 }}
                 className="space-y-4 max-w-3xl"
               >
-                <div className="text-xl md:text-3xl font-light tracking-wide text-white/90 drop-shadow-md">
+                <div className="text-xl md:text-3xl font-bold tracking-wide text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]">
                     <p className="subtitle-line">{subtitles[i].line1}</p>
                     <p className="subtitle-line">{subtitles[i].line2}</p>
                 </div>
-                <p className="subtitle-line text-sm md:text-lg text-white/60 leading-relaxed font-normal mt-6 max-w-2xl mx-auto drop-shadow-sm">
+                <p className="subtitle-line text-sm md:text-lg text-white/90 leading-relaxed font-medium mt-6 max-w-2xl mx-auto drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]">
                     {subtitles[i].paragraph}
                 </p>
               </motion.div>
@@ -617,7 +256,7 @@ export const HorizonHeroSection = () => {
                   <Magnetic strength={0.3}>
                     <a 
                       href="/login" 
-                      className="px-8 py-4 bg-primary text-[#001209] font-bold rounded-full text-lg shadow-[0_0_20px_rgba(149,212,179,0.3)] hover:shadow-[0_0_40px_rgba(149,212,179,0.6)] transition-all duration-300 transform hover:scale-105 inline-block"
+                      className="px-8 py-4 bg-primary text-[#001209] font-bold rounded-full text-lg shadow-[0_0_30px_rgba(149,212,179,0.5)] hover:shadow-[0_0_50px_rgba(149,212,179,0.8)] transition-all duration-300 transform hover:scale-105 inline-block backdrop-blur-md"
                     >
                       Enter EcoTrack
                     </a>
@@ -634,21 +273,21 @@ export const HorizonHeroSection = () => {
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: scrollProgress > 0.3 ? 0 : -100, opacity: scrollProgress > 0.3 ? 1 : 0 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
-        className="fixed top-0 left-0 right-0 z-50 px-6 py-4 flex items-center justify-between backdrop-blur-xl bg-[#001209]/70 border-b border-primary/20 shadow-[0_4px_30px_rgba(0,0,0,0.5)]"
+        className="fixed top-0 left-0 right-0 z-50 px-6 py-4 flex items-center justify-between backdrop-blur-xl bg-black/50 border-b border-primary/20 shadow-[0_4px_30px_rgba(0,0,0,0.5)]"
       >
-        <div className="text-2xl font-extrabold tracking-tighter text-white flex items-center gap-2">
+        <div className="text-2xl font-extrabold tracking-tighter text-white flex items-center gap-2 drop-shadow-md">
           <Leaf className="text-primary h-6 w-6" /> EcoTrack
         </div>
         <div className="flex items-center gap-4">
-          <a href="/login" className="text-sm font-semibold text-white/80 hover:text-white transition-colors">Sign In</a>
-          <a href="/login" className="px-5 py-2 bg-primary/20 hover:bg-primary text-primary hover:text-[#001209] font-bold rounded-full text-sm border border-primary/50 transition-all duration-300">
+          <a href="/login" className="text-sm font-semibold text-white/90 hover:text-white transition-colors drop-shadow-md">Sign In</a>
+          <a href="/login" className="px-5 py-2 bg-primary/20 hover:bg-primary text-primary hover:text-[#001209] font-bold rounded-full text-sm border border-primary/50 transition-all duration-300 backdrop-blur-md">
             Get Started
           </a>
         </div>
       </motion.nav>
 
       {/* Standard Content Flow below the 3D Experience */}
-      <div className="relative z-10 bg-[#001209] w-full border-t border-primary/10">
+      <div className="relative z-10 bg-black w-full border-t border-primary/10">
 
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 mix-blend-overlay pointer-events-none" />
 
@@ -798,12 +437,11 @@ export const HorizonHeroSection = () => {
               <Leaf className="text-primary h-5 w-5" /> EcoTrack
             </div>
             <div className="text-white/40 text-sm font-medium">
-              © 2026 EcoTrack. All rights reserved. Building a sustainable future.
+              &copy; {new Date().getFullYear()} EcoTrack AI. All rights reserved.
             </div>
           </div>
         </footer>
       </div>
-
     </div>
   );
 };
