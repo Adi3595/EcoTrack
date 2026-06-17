@@ -14,8 +14,7 @@ import { motion } from "framer-motion"
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts"
 import { Sidebar } from "@/components/ui/sidebar"
 import { Skeleton } from "@/components/ui/skeleton"
-import { Shared3DBackground } from "@/components/ui/shared-3d-background"
-import { WaterRipple } from "@/components/ui/water-ripple"
+import { WaterCanvas } from "@/components/ui/water-canvas"
 
 interface Activity {
   id: string;
@@ -134,28 +133,13 @@ export default function Dashboard() {
 
   return (
     <div className="flex min-h-screen bg-transparent text-white selection:bg-teal-500/30 relative z-0 overflow-hidden">
-      {/* SVG Water Ripple Filter Definition */}
-      <svg className="hidden">
-        <filter id="water-filter">
-          <feTurbulence type="fractalNoise" baseFrequency="0.01 0.01" numOctaves="2" result="noise">
-            <animate attributeName="baseFrequency" values="0.01 0.01;0.015 0.02;0.01 0.01" dur="10s" repeatCount="indefinite" />
-          </feTurbulence>
-          <feDisplacementMap in="SourceGraphic" in2="noise" scale="20" xChannelSelector="R" yChannelSelector="G" />
-        </filter>
-      </svg>
-
-      {/* Water Refraction Overlay applied over the entire background */}
-      <div className="absolute inset-0 z-[-2] pointer-events-none" style={{ backdropFilter: 'url(#water-filter)' }} />
+      {/* 3D Interactive WebGL Water Canvas */}
+      <WaterCanvas />
       
-      {/* Subtle Tint instead of opaque gradient */}
-      <div className="absolute inset-0 bg-teal-950/40 mix-blend-multiply pointer-events-none z-[-2]" />
-      
-      {/* Slow moving liquid orbs */}
+      {/* Slow moving liquid orbs for ambiance over the water */}
       <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-teal-400/20 blur-[120px] rounded-[100%] pointer-events-none z-[-1] animate-pulse" style={{ animationDuration: '8s' }} />
       <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-cyan-500/20 blur-[100px] rounded-[100%] pointer-events-none z-[-1] animate-pulse" style={{ animationDuration: '10s', animationDelay: '2s' }} />
 
-      <WaterRipple />
-      <Shared3DBackground />
       <Sidebar activeTab="dashboard" />
 
       {/* Main Content */}
