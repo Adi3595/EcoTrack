@@ -29,7 +29,7 @@ def process_receipt_ocr(image_bytes: bytes, user_id: str):
         
         OCR Text:
         {text[:1000]}
-        \"\"\"
+        """
         
         response = client.chat.completions.create(
             model="llama-3.1-8b-instant",
