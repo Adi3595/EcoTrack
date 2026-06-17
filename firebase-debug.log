@@ -1,0 +1,212 @@
+[debug] [2026-06-17T18:23:05.729Z] ----------------------------------------------------------------------
+[debug] [2026-06-17T18:23:05.731Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\gawal\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy --only hosting
+[debug] [2026-06-17T18:23:05.732Z] CLI Version:   15.1.0
+[debug] [2026-06-17T18:23:05.732Z] Platform:      win32
+[debug] [2026-06-17T18:23:05.732Z] Node Version:  v22.12.0
+[debug] [2026-06-17T18:23:05.732Z] Time:          Wed Jun 17 2026 23:53:05 GMT+0530 (India Standard Time)
+[debug] [2026-06-17T18:23:05.732Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-06-17T18:23:07.703Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-06-17T18:23:07.704Z] > authorizing via signed-in user (aditya.gawali24@vit.edu)
+[debug] [2026-06-17T18:23:07.705Z] [iam] checking project ecotrack-c4af6 for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2026-06-17T18:23:07.708Z] Checked if tokens are valid: true, expires at: 1781723285451
+[debug] [2026-06-17T18:23:07.708Z] Checked if tokens are valid: true, expires at: 1781723285451
+[debug] [2026-06-17T18:23:07.710Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/ecotrack-c4af6:testIamPermissions [none]
+[debug] [2026-06-17T18:23:07.710Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/ecotrack-c4af6:testIamPermissions x-goog-quota-user=projects/ecotrack-c4af6
+[debug] [2026-06-17T18:23:07.711Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/ecotrack-c4af6:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2026-06-17T18:23:09.483Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/ecotrack-c4af6:testIamPermissions 200
+[debug] [2026-06-17T18:23:09.484Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/ecotrack-c4af6:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2026-06-17T18:23:09.485Z] Checked if tokens are valid: true, expires at: 1781723285451
+[debug] [2026-06-17T18:23:09.485Z] Checked if tokens are valid: true, expires at: 1781723285451
+[debug] [2026-06-17T18:23:09.486Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/ecotrack-c4af6 [none]
+[debug] [2026-06-17T18:23:10.126Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/ecotrack-c4af6 200
+[debug] [2026-06-17T18:23:10.126Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/ecotrack-c4af6 {"projectId":"ecotrack-c4af6","projectNumber":"456667488618","displayName":"EcoTrack","name":"projects/ecotrack-c4af6","resources":{"hostingSite":"ecotrack-c4af6"},"state":"ACTIVE","etag":"1_d821036b-d643-4434-b58e-5af53fef7136"}
+[debug] [2026-06-17T18:23:12.570Z] Checked if tokens are valid: true, expires at: 1781723285451
+[debug] [2026-06-17T18:23:12.570Z] Checked if tokens are valid: true, expires at: 1781723285451
+[debug] [2026-06-17T18:23:12.570Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/ecotrack-c4af6/sites pageToken=&pageSize=10
+[debug] [2026-06-17T18:23:14.808Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/ecotrack-c4af6/sites 200
+[debug] [2026-06-17T18:23:14.808Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/ecotrack-c4af6/sites {"sites":[{"name":"projects/ecotrack-c4af6/sites/ecotrack-c4af6","defaultUrl":"https://ecotrack-c4af6.web.app","type":"DEFAULT_SITE"}]}
+[debug] [2026-06-17T18:23:14.809Z] Checked if tokens are valid: true, expires at: 1781723285451
+[debug] [2026-06-17T18:23:14.809Z] Checked if tokens are valid: true, expires at: 1781723285451
+[debug] [2026-06-17T18:23:14.809Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/ecotrack-c4af6/sites 
+[debug] [2026-06-17T18:23:15.647Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/ecotrack-c4af6/sites 200
+[debug] [2026-06-17T18:23:15.647Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/ecotrack-c4af6/sites {"sites":[{"name":"projects/ecotrack-c4af6/sites/ecotrack-c4af6","defaultUrl":"https://ecotrack-c4af6.web.app","type":"DEFAULT_SITE"}]}
+[debug] [2026-06-17T18:23:15.647Z] Checked if tokens are valid: true, expires at: 1781723285451
+[debug] [2026-06-17T18:23:15.648Z] Checked if tokens are valid: true, expires at: 1781723285451
+[debug] [2026-06-17T18:23:15.648Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/ecotrack-c4af6/webApps/-/config [none]
+[debug] [2026-06-17T18:23:17.111Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/ecotrack-c4af6/webApps/-/config 200
+[debug] [2026-06-17T18:23:17.111Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/ecotrack-c4af6/webApps/-/config {"projectId":"ecotrack-c4af6","appId":"1:456667488618:web:541ad01f5ef3eae4df4513","storageBucket":"ecotrack-c4af6.firebasestorage.app","apiKey":"AIzaSyDWaBd2-BhSliczBmpvh9CBxYKhL5jyDro","authDomain":"ecotrack-c4af6.firebaseapp.com","messagingSenderId":"456667488618","measurementId":"G-0C915EC0V7","projectNumber":"456667488618","version":"2"}
+[info] 
+   Thank you for trying our early preview of Next.js support on Firebase Hosting.
+   During the preview, support is best-effort and breaking changes can be expected. Proceed with caution.
+   The integration is known to work with Next.js version 12 - 15.0. You may encounter errors.
+
+   Documentation: https://firebase.google.com/docs/hosting/frameworks/nextjs
+   File a bug: https://github.com/firebase/firebase-tools/issues/new?template=bug_report.md
+   Submit a feature request: https://github.com/firebase/firebase-tools/issues/new?template=feature_request.md
+
+   We'd love to learn from you. Express your interest in helping us shape the future of Firebase Hosting: https://goo.gle/41enW5X
+
+[debug] [2026-06-17T18:23:22.909Z] Checked if tokens are valid: true, expires at: 1781723285451
+[debug] [2026-06-17T18:23:22.909Z] Checked if tokens are valid: true, expires at: 1781723285451
+[debug] [2026-06-17T18:23:22.909Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/ecotrack-c4af6/sites/ecotrack-c4af6 [none]
+[debug] [2026-06-17T18:23:24.359Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/ecotrack-c4af6/sites/ecotrack-c4af6 200
+[debug] [2026-06-17T18:23:24.360Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/ecotrack-c4af6/sites/ecotrack-c4af6 {"name":"projects/ecotrack-c4af6/sites/ecotrack-c4af6","defaultUrl":"https://ecotrack-c4af6.web.app","type":"DEFAULT_SITE"}
+[info] ⚠ `eslint` configuration in next.config.ts is no longer supported. See more info here: https://nextjs.org/docs/app/api-reference/cli/next#next-lint-options
+
+[info] ⚠ Invalid next.config.ts options detected: 
+⚠     Unrecognized key(s) in object: 'eslint'
+
+[info] ⚠ See more info here: https://nextjs.org/docs/messages/invalid-next-config
+
+[info] ▲ Next.js 16.2.9 (Turbopack)
+
+[info] - Environments: .env.production
+
+
+[info]   Creating an optimized production build ...
+
+[info] 
+
+[info] > Build error occurred
+
+[info] Error: Turbopack build failed with 5 errors:
+./src/app/challenges/page.tsx:12:1
+Module not found: Can't resolve '@/components/ui/shared-3d-background'
+  10 | import { toast } from "sonner"
+  11 | import { Sidebar } from "@/components/ui/sidebar"
+> 12 | import { Shared3DBackground } from "@/components/ui/shared-3d-background"
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  13 |
+  14 | import { useState, useRef, useEffect } from "react"
+  15 | import { api } from "@/lib/api"
+
+Import map: aliased to relative './src/components/ui/shared-3d-background' inside of [project]/
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/challenges/page.tsx [Client Component Browser]
+    ./src/app/challenges/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/challenges/page.tsx [Client Component SSR]
+    ./src/app/challenges/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./src/app/chat/page.tsx:10:1
+Module not found: Can't resolve '@/components/ui/shared-3d-background'
+   8 | import { useRouter } from "next/navigation";
+   9 | import { AnimatedAIChat } from "@/components/ui/animated-ai-chat";
+> 10 | import { Shared3DBackground } from "@/components/ui/shared-3d-background";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  11 | import { GlassCard } from "@/components/ui/glass-card";
+  12 | import { Sidebar } from "@/components/ui/sidebar";
+  13 |
+
+Import map: aliased to relative './src/components/ui/shared-3d-background' inside of [project]/
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/chat/page.tsx [Client Component Browser]
+    ./src/app/chat/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/chat/page.tsx [Client Component SSR]
+    ./src/app/chat/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./src/app/shopping/page.tsx:13:1
+Module not found: Can't resolve '@/components/ui/shared-3d-background'
+  11 | import { Sidebar } from "@/components/ui/sidebar"
+  12 | import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip, BarChart, Bar, XAxis, YAxis } ...
+> 13 | import { Shared3DBackground } from "@/components/ui/shared-3d-background"
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  14 |
+  15 | export default function ShoppingAssistant() {
+  16 |   const { user } = useAuthStore()
+
+Import map: aliased to relative './src/components/ui/shared-3d-background' inside of [project]/
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/shopping/page.tsx [Client Component Browser]
+    ./src/app/shopping/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/shopping/page.tsx [Client Component SSR]
+    ./src/app/shopping/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./src/app/travel/page.tsx:14:1
+Module not found: Can't resolve '@/components/ui/shared-3d-background'
+  12 | import { useRouter } from "next/navigation"
+  13 | import dynamic from 'next/dynamic'
+> 14 | import { Shared3DBackground } from "@/components/ui/shared-3d-background"
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  15 |
+  16 | // Dynamically import Leaflet map to avoid SSR issues
+  17 | const DynamicMap = dynamic(() => import('@/components/ui/travel-map'), { ssr: false, loadi...
+
+Import map: aliased to relative './src/components/ui/shared-3d-background' inside of [project]/
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/travel/page.tsx [Client Component Browser]
+    ./src/app/travel/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/travel/page.tsx [Client Component SSR]
+    ./src/app/travel/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./src/app/upload/page.tsx:14:1
+Module not found: Can't resolve '@/components/ui/shared-3d-background'
+  12 | import { toast } from "sonner"
+  13 | import { Sidebar } from "@/components/ui/sidebar"
+> 14 | import { Shared3DBackground } from "@/components/ui/shared-3d-background"
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  15 |
+  16 | export default function UploadPage() {
+  17 |   const { user } = useAuthStore()
+
+Import map: aliased to relative './src/components/ui/shared-3d-background' inside of [project]/
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/upload/page.tsx [Client Component Browser]
+    ./src/app/upload/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/upload/page.tsx [Client Component SSR]
+    ./src/app/upload/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+    at <unknown> (./src/app/challenges/page.tsx:12:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./src/app/chat/page.tsx:10:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./src/app/shopping/page.tsx:13:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./src/app/travel/page.tsx:14:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./src/app/upload/page.tsx:14:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+
+[debug] [2026-06-17T18:23:35.212Z] Error: ENOENT: no such file or directory, open 'C:\Hackathons\Prompt Wars\Challenge 3\frontend\.next\server\middleware-manifest.json'
+[error] 
+[error] Error: An unexpected error has occurred.

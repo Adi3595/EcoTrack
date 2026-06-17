@@ -7,7 +7,7 @@ import Link from "next/link";
 import { useAuthStore } from "@/store/authStore";
 import { useRouter } from "next/navigation";
 import { AnimatedAIChat } from "@/components/ui/animated-ai-chat";
-import { Shared3DBackground } from "@/components/ui/shared-3d-background";
+import { WaterWaveWrapper } from "@/components/ui/water-wave-wrapper";
 import { GlassCard } from "@/components/ui/glass-card";
 import { Sidebar } from "@/components/ui/sidebar";
 
@@ -30,8 +30,8 @@ export default function ChatAssistant() {
   if (!_hasHydrated || !user) return null;
 
   return (
-    <div className="flex h-screen bg-transparent text-white overflow-hidden relative z-0">
-      <Shared3DBackground />
+    <WaterWaveWrapper>
+      <div className="flex h-screen bg-transparent text-white overflow-hidden relative z-0">
       <Sidebar activeTab="chat" />
 
       {/* Main Chat Area */}
@@ -48,6 +48,7 @@ export default function ChatAssistant() {
           <AnimatedAIChat />
         </div>
       </GlassCard>
-    </div>
+      </div>
+    </WaterWaveWrapper>
   );
 }

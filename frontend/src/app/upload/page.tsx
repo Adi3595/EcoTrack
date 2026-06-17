@@ -11,7 +11,7 @@ import { api } from "@/lib/api"
 import { motion, AnimatePresence } from "framer-motion"
 import { toast } from "sonner"
 import { Sidebar } from "@/components/ui/sidebar"
-import { Shared3DBackground } from "@/components/ui/shared-3d-background"
+import { WaterWaveWrapper } from "@/components/ui/water-wave-wrapper"
 
 export default function UploadPage() {
   const { user } = useAuthStore()
@@ -70,8 +70,8 @@ export default function UploadPage() {
   if (!user) return null
 
   return (
-    <div className="flex min-h-screen bg-transparent text-white selection:bg-primary/30 relative z-0">
-      <Shared3DBackground />
+    <WaterWaveWrapper>
+      <div className="flex min-h-screen bg-transparent text-white selection:bg-primary/30 relative z-0">
       <Sidebar activeTab="upload" />
 
       {/* Main Content */}
@@ -198,6 +198,7 @@ export default function UploadPage() {
           </AnimatePresence>
         </motion.div>
       </main>
-    </div>
+      </div>
+    </WaterWaveWrapper>
   )
 }

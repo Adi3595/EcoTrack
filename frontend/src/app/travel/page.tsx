@@ -11,7 +11,7 @@ import { Sidebar } from "@/components/ui/sidebar"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import dynamic from 'next/dynamic'
-import { Shared3DBackground } from "@/components/ui/shared-3d-background"
+import { WaterWaveWrapper } from "@/components/ui/water-wave-wrapper"
 
 // Dynamically import Leaflet map to avoid SSR issues
 const DynamicMap = dynamic(() => import('@/components/ui/travel-map'), { ssr: false, loading: () => <div className="h-[500px] w-full bg-white/5 animate-pulse rounded-3xl" /> })
@@ -120,8 +120,8 @@ export default function TravelTracker() {
   if (!_hasHydrated || !user) return null
 
   return (
-    <div className="flex min-h-screen bg-transparent text-white selection:bg-primary/30 relative z-0">
-      <Shared3DBackground />
+    <WaterWaveWrapper>
+      <div className="flex min-h-screen bg-transparent text-white selection:bg-primary/30 relative z-0">
       <Sidebar activeTab="travel" />
       <main className="flex-1 p-6 md:p-10 max-w-7xl mx-auto overflow-y-auto">
         <header className="mb-10 flex items-center justify-between">
@@ -249,6 +249,7 @@ export default function TravelTracker() {
           </div>
         </div>
       </main>
-    </div>
+      </div>
+    </WaterWaveWrapper>
   )
 }

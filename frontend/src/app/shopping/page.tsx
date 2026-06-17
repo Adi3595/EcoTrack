@@ -10,7 +10,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { toast } from "sonner"
 import { Sidebar } from "@/components/ui/sidebar"
 import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip, BarChart, Bar, XAxis, YAxis } from "recharts"
-import { Shared3DBackground } from "@/components/ui/shared-3d-background"
+import { WaterWaveWrapper } from "@/components/ui/water-wave-wrapper"
 
 export default function ShoppingAssistant() {
   const { user } = useAuthStore()
@@ -83,8 +83,8 @@ export default function ShoppingAssistant() {
   const COLORS = ['#95d4b3', '#4d6553', '#003824']
 
   return (
-    <div className="flex min-h-screen bg-transparent text-white selection:bg-primary/30 relative z-0">
-      <Shared3DBackground />
+    <WaterWaveWrapper>
+      <div className="flex min-h-screen bg-transparent text-white selection:bg-primary/30 relative z-0">
       <Sidebar activeTab="shopping" />
       <main className="flex-1 p-6 md:p-10 max-w-7xl mx-auto overflow-y-auto">
         <header className="mb-10 flex items-center gap-4">
@@ -253,6 +253,7 @@ export default function ShoppingAssistant() {
           </div>
         </div>
       </main>
-    </div>
+      </div>
+    </WaterWaveWrapper>
   )
 }
