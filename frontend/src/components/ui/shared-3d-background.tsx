@@ -78,23 +78,23 @@ export function Shared3DBackground() {
           }}
         />
 
-        {/* Dynamic Animated CSS Waves */}
-        <div className="absolute inset-x-0 bottom-0 h-[40vh] pointer-events-none overflow-hidden mix-blend-screen z-[-1]">
+        {/* Dynamic Animated CSS Waves - FULL SCREEN FLUIDITY */}
+        <div className="absolute inset-0 h-screen pointer-events-none overflow-hidden mix-blend-overlay z-[-1]">
           {/* Wave 1 - Back (Slowest) */}
-          <div className="absolute bottom-[-10%] left-0 w-[200vw] h-full opacity-30 will-change-transform" style={{
-            background: `url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0,0 C150,120 350,0 600,60 C850,120 1050,0 1200,60 L1200,120 L0,120 Z" fill="%230f766e"/></svg>')`,
+          <div className="absolute top-[-10%] left-0 w-[200vw] h-[120%] opacity-20 will-change-transform" style={{
+            background: `url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0,0 C150,120 350,0 600,60 C850,120 1050,0 1200,60 L1200,120 L0,120 Z" fill="%232dd4bf"/></svg>')`,
             backgroundSize: '50% 100%',
             animation: 'wave-move 20s linear infinite'
           }} />
           {/* Wave 2 - Middle */}
-          <div className="absolute bottom-[-20%] left-0 w-[200vw] h-[120%] opacity-40 will-change-transform" style={{
-            background: `url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0,60 C150,0 350,120 600,60 C850,0 1050,120 1200,60 L1200,120 L0,120 Z" fill="%230e7490"/></svg>')`,
+          <div className="absolute top-[10%] left-0 w-[200vw] h-[120%] opacity-20 will-change-transform" style={{
+            background: `url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0,60 C150,0 350,120 600,60 C850,0 1050,120 1200,60 L1200,120 L0,120 Z" fill="%2306b6d4"/></svg>')`,
             backgroundSize: '50% 100%',
             animation: 'wave-move 15s linear infinite'
           }} />
           {/* Wave 3 - Front (Fastest) */}
-          <div className="absolute bottom-[-30%] left-0 w-[200vw] h-[140%] opacity-50 will-change-transform" style={{
-            background: `url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0,30 C150,90 350,30 600,60 C850,90 1050,30 1200,60 L1200,120 L0,120 Z" fill="%2314b8a6"/></svg>')`,
+          <div className="absolute top-[30%] left-0 w-[200vw] h-[140%] opacity-30 will-change-transform" style={{
+            background: `url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0,30 C150,90 350,30 600,60 C850,90 1050,30 1200,60 L1200,120 L0,120 Z" fill="%235eead4"/></svg>')`,
             backgroundSize: '50% 100%',
             animation: 'wave-move 10s linear infinite'
           }} />
