@@ -88,13 +88,13 @@ async def complete_daily_task(
         
     client = AsyncOpenAI(api_key=api_key, base_url="https://api.groq.com/openai/v1")
     
-    prompt = f\"\"\"
+    prompt = f"""
     The user claims to have completed the eco-friendly task: "{req.task_title}".
     Look at the uploaded image proof. Does the image reasonably prove this task was completed?
     (e.g. if the task is 'use a reusable coffee cup', the image must contain a coffee cup).
     Return ONLY a valid JSON object matching exactly:
     {{"verified": true/false, "reason": "short explanation"}}
-    \"\"\"
+    """
     
     # Strip data URI prefix if present
     base64_img = req.proof_base64

@@ -22,7 +22,7 @@ def process_receipt_ocr(image_bytes: bytes, user_id: str):
             
         client = OpenAI(api_key=api_key, base_url="https://api.groq.com/openai/v1")
         
-        prompt = f\"\"\"
+        prompt = f"""
         The following text was extracted via OCR from an image uploaded by a user as a 'receipt' or 'utility bill'.
         Read the text and determine if it is reasonably a valid receipt, bill, or ticket. If it is random garbage, empty, or unrelated text, reject it.
         Return ONLY a JSON object: {{"verified": true/false, "category": "ELECTRICITY" or "TRANSPORT" or "SHOPPING" or "UNKNOWN"}}
