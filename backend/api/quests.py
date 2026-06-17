@@ -2,6 +2,9 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from datetime import datetime, timedelta
 import random
+import os
+import json
+from openai import AsyncOpenAI
 
 from api import deps
 from models.user import User
@@ -63,7 +66,7 @@ def get_daily_tasks(
 
 
 @router.post("/daily/complete")
-def complete_daily_task(
+async def complete_daily_task(
     req: CompleteTaskRequest,
     db: Session = Depends(deps.get_db),
     current_user: User = Depends(deps.get_current_user),
@@ -77,6 +80,63 @@ def complete_daily_task(
     
     if log and (now - log.completed_at) < timedelta(hours=24):
         raise HTTPException(status_code=400, detail="Task is currently on cooldown (24h lock)")
+
+    # ---------------- AI VISION VERIFICATION ---------------- #
+    api_key = os.getenv("GROQ_API_KEY")
+    if not api_key:
+        raise HTTPException(status_code=500, detail="Groq API key not configured")
+        
+    client = AsyncOpenAI(api_key=api_key, base_url="https://api.groq.com/openai/v1")
+    
+    prompt = f\"\"\"
+    The user claims to have completed the eco-friendly task: "{req.task_title}".
+    Look at the uploaded image proof. Does the image reasonably prove this task was completed?
+    (e.g. if the task is 'use a reusable coffee cup', the image must contain a coffee cup).
+    Return ONLY a valid JSON object matching exactly:
+    {{"verified": true/false, "reason": "short explanation"}}
+    \"\"\"
+    
+    # Strip data URI prefix if present
+    base64_img = req.proof_base64
+    if base64_img.startswith("data:image"):
+        base64_img = base64_img.split(",")[1]
+
+    try:
+        response = await client.chat.completions.create(
+            model="llama-3.2-11b-vision-preview",
+            messages=[
+                {
+                    "role": "user",
+                    "content": [
+                        {"type": "text", "text": prompt},
+                        {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{base64_img}"}}
+                    ]
+                }
+            ],
+            temperature=0.1,
+            max_tokens=200
+        )
+        
+        raw_output = response.choices[0].message.content
+        if raw_output.startswith("```json"):
+            raw_output = raw_output[7:-3]
+        elif raw_output.startswith("```"):
+            raw_output = raw_output[3:-3]
+            
+        data = json.loads(raw_output.strip())
+        
+        if not data.get("verified", False):
+            raise HTTPException(status_code=400, detail=f"AI Verification Failed: {data.get('reason', 'Image does not match task.')}")
+            
+    except json.JSONDecodeError:
+        print("Failed to parse Groq vision response:", raw_output)
+        raise HTTPException(status_code=500, detail="Failed to verify image with AI.")
+    except Exception as e:
+        if isinstance(e, HTTPException):
+            raise e
+        print("Groq Vision API Error:", str(e))
+        raise HTTPException(status_code=500, detail="AI Vision API error during verification.")
+    # -------------------------------------------------------- #
         
     # Log task
     new_log = UserTaskLog(user_id=current_user.id, task_id=req.task_id, completed_at=now)

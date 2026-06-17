@@ -316,15 +316,17 @@ function DailyTasksSection() {
 
     setVerifyingTask(activeTask.id);
     
-    // Simulate AI Vision Verification Delay (2 seconds)
     toast.info("Uploading and verifying with AI Vision...");
     
-    setTimeout(async () => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = async () => {
+      const base64String = reader.result as string;
       try {
         const response = await api.post("/quests/daily/complete", {
           task_id: activeTask.id,
           task_title: activeTask.title,
-          proof_base64: "simulated_base64_string",
+          proof_base64: base64String,
           reward_xp: activeTask.reward_xp,
           reward_carbon: activeTask.reward_carbon
         });
@@ -340,7 +342,11 @@ function DailyTasksSection() {
         toast.error(err.response?.data?.detail || "Verification failed. Please try again.");
         setVerifyingTask(null);
       }
-    }, 2000);
+    };
+    reader.onerror = () => {
+      toast.error("Failed to read file.");
+      setVerifyingTask(null);
+    };
   };
 
   return (

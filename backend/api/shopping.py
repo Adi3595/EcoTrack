@@ -40,7 +40,9 @@ async def analyze_product(
                     "content": [
                         {
                             "type": "text", 
-                            "text": """Analyze this product image for environmental impact. You must return ONLY a valid JSON object matching this structure, with no markdown formatting:
+                            "text": """Analyze this product image for environmental impact. 
+If the image does not contain a product, food item, or recognizable shopping item (e.g., if it is a blank wall, a person, or completely unrelated), you MUST set "eco_rating" to "INVALID".
+You must return ONLY a valid JSON object matching this structure, with no markdown formatting:
 {
   "name": "Product Name",
   "category": "Category",
@@ -76,6 +78,9 @@ async def analyze_product(
             raw_output = raw_output[3:-3]
             
         data = json.loads(raw_output.strip())
+        
+        if data.get("eco_rating") == "INVALID":
+            raise HTTPException(status_code=400, detail="The uploaded image does not appear to be a recognizable product or shopping item.")
 
         # Save to database
         product = ShoppingProduct(
