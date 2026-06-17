@@ -68,6 +68,17 @@ export function Shared3DBackground() {
           style={{ backgroundImage: 'url(/bg-dashboard.jpg)', animationDuration: '8s' }}
         />
 
+        {/* Watery Image Layer 2 - 3D Foreground Mask (Above the screen layer) */}
+        <div 
+          className="absolute inset-[-5%] w-[110%] h-[110%] bg-cover bg-center opacity-90 will-change-transform pointer-events-none"
+          style={{ 
+            backgroundImage: 'url(/bg-dashboard.jpg)', 
+            WebkitMaskImage: 'linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 20%, rgba(0,0,0,0) 50%)',
+            maskImage: 'linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 20%, rgba(0,0,0,0) 50%)',
+            animation: 'liquidWave 15s ease-in-out infinite alternate-reverse'
+          }}
+        />
+
         {/* Watery Image Layer 2 - Wave Distortion Simulation */}
         <div 
           className="absolute inset-[-5%] w-[110%] h-[110%] bg-cover bg-center opacity-20 mix-blend-screen blur-[2px] will-change-transform"
