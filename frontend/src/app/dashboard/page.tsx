@@ -14,8 +14,7 @@ import { motion } from "framer-motion"
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts"
 import { Sidebar } from "@/components/ui/sidebar"
 import { Skeleton } from "@/components/ui/skeleton"
-import { Shared3DBackground } from "@/components/ui/shared-3d-background"
-import { WaterRipple } from "@/components/ui/water-ripple"
+import { WaterWaveWrapper } from "@/components/ui/water-wave-wrapper"
 
 interface Activity {
   id: string;
@@ -52,9 +51,9 @@ const itemVariants = {
 
 function DashboardSkeleton() {
   return (
-    <div className="flex min-h-screen bg-transparent relative z-0">
-      <Shared3DBackground />
-      <Sidebar activeTab="dashboard" />
+    <WaterWaveWrapper>
+      <div className="flex min-h-screen bg-transparent relative z-0">
+        <Sidebar activeTab="dashboard" />
       <main className="flex-1 p-6 md:p-10 max-w-7xl mx-auto w-full">
         <header className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-10 gap-4 w-full">
           <div>
@@ -98,7 +97,8 @@ function DashboardSkeleton() {
           </div>
         </div>
       </main>
-    </div>
+      </div>
+    </WaterWaveWrapper>
   )
 }
 
@@ -133,10 +133,9 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="flex min-h-screen bg-transparent text-white [text-shadow:_0_2px_12px_rgb(0_0_0_/_100%)] selection:bg-primary/30 relative z-0">
-      <Shared3DBackground />
-      <WaterRipple />
-      <Sidebar activeTab="dashboard" />
+    <WaterWaveWrapper>
+      <div className="flex min-h-screen bg-transparent text-white [text-shadow:_0_2px_12px_rgb(0_0_0_/_100%)] selection:bg-primary/30 relative z-0">
+        <Sidebar activeTab="dashboard" />
 
       {/* Main Content */}
       <main className="flex-1 p-6 md:p-10 max-w-7xl mx-auto overflow-y-auto">
@@ -313,8 +312,9 @@ export default function Dashboard() {
           </motion.div>
 
         </motion.div>
-      </main>
-    </div>
+        </main>
+      </div>
+    </WaterWaveWrapper>
   )
 }
 
