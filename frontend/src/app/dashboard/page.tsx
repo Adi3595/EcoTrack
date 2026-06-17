@@ -51,8 +51,8 @@ const itemVariants = {
 
 function DashboardSkeleton() {
   return (
-    <div className="flex min-h-screen bg-transparent relative z-0">
-      <Shared3DBackground />
+    <div className="flex min-h-screen bg-transparent relative z-0 overflow-hidden">
+      <WaterCanvas />
       <Sidebar activeTab="dashboard" />
       <main className="flex-1 p-6 md:p-10 max-w-7xl mx-auto w-full">
         <header className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-10 gap-4 w-full">
