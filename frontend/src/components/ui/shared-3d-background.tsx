@@ -58,13 +58,13 @@ export function Shared3DBackground() {
         {/* Main Background Image - Base Layer */}
         <div 
           ref={bgRef}
-          className="absolute inset-[-5%] w-[110%] h-[110%] bg-cover bg-center opacity-50 will-change-transform"
+          className="absolute inset-[-5%] w-[110%] h-[110%] bg-cover bg-center opacity-100 will-change-transform"
           style={{ backgroundImage: 'url(/bg-dashboard.jpg)' }}
         />
         
         {/* Watery Image Layer 1 - Blurred Refraction */}
         <div 
-          className="absolute inset-[-10%] w-[120%] h-[120%] bg-cover bg-center opacity-30 mix-blend-overlay blur-[4px] will-change-transform animate-pulse"
+          className="absolute inset-[-10%] w-[120%] h-[120%] bg-cover bg-center opacity-50 mix-blend-overlay blur-[2px] will-change-transform animate-pulse"
           style={{ backgroundImage: 'url(/bg-dashboard.jpg)', animationDuration: '8s' }}
         />
 

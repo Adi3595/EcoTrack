@@ -161,7 +161,7 @@ export default function Dashboard() {
         >
           {/* Main Score Card */}
           <motion.div variants={itemVariants} className="col-span-1 md:col-span-8">
-            <GlassCard className="p-8 flex flex-col md:flex-row items-center gap-8 h-full bg-transparent backdrop-blur-sm shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)] border border-white/10 rounded-3xl hover:bg-white/[0.04] transition-colors">
+            <GlassCard className="p-8 flex flex-col md:flex-row items-center gap-8 h-full bg-transparent backdrop-blur-[2px] shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)] border border-white/10 rounded-3xl hover:bg-white/[0.04] transition-colors">
               <motion.div 
                 initial={{ scale: 0 }} 
                 animate={{ scale: 1 }} 
@@ -212,7 +212,7 @@ export default function Dashboard() {
 
           {/* Weekly Trends Chart */}
           <motion.div variants={itemVariants} className="col-span-1 md:col-span-12">
-            <GlassCard className="p-8 bg-transparent backdrop-blur-sm shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)] border border-white/10 rounded-3xl">
+            <GlassCard className="p-8 bg-transparent backdrop-blur-[2px] shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)] border border-white/10 rounded-3xl">
               <div className="flex items-center justify-between mb-8">
                 <h3 className="text-2xl font-bold">Weekly Emissions Trend</h3>
                 <CarbonChip level="low" className="bg-primary/20 border-primary/50 text-primary animate-pulse">Live Data</CarbonChip>
@@ -247,7 +247,7 @@ export default function Dashboard() {
 
           {/* AI Recommendations */}
           <motion.div variants={itemVariants} className="col-span-1 md:col-span-6">
-            <GlassCard className="p-8 h-full bg-transparent backdrop-blur-sm shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)] border border-white/10 rounded-3xl">
+            <GlassCard className="p-8 h-full bg-transparent backdrop-blur-[2px] shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)] border border-white/10 rounded-3xl">
               <div className="flex items-center justify-between mb-8">
                 <h3 className="text-2xl font-bold">AI Insights</h3>
                 <span className="relative flex h-3 w-3">
@@ -256,14 +256,14 @@ export default function Dashboard() {
                 </span>
               </div>
               <ul className="space-y-4">
-                <li className="flex items-start gap-4 p-5 rounded-2xl bg-transparent backdrop-blur-sm border border-white/5 hover:border-primary/50 transition-colors shadow-lg">
+                <li className="flex items-start gap-4 p-5 rounded-2xl bg-transparent backdrop-blur-[2px] border border-white/5 hover:border-primary/50 transition-colors shadow-lg">
                   <div className="bg-primary/20 p-3.5 rounded-xl"><Leaf className="h-6 w-6 text-primary" /></div>
                   <div>
                     <h4 className="text-lg font-bold mb-1">Switch to Public Transit</h4>
                     <p className="text-white/60">Taking the train tomorrow could save 5kg of CO2.</p>
                   </div>
                 </li>
-                <li className="flex items-start gap-4 p-5 rounded-2xl bg-transparent backdrop-blur-sm border border-white/5 hover:border-amber-500/50 transition-colors shadow-lg">
+                <li className="flex items-start gap-4 p-5 rounded-2xl bg-transparent backdrop-blur-[2px] border border-white/5 hover:border-amber-500/50 transition-colors shadow-lg">
                   <div className="bg-amber-500/20 p-3.5 rounded-xl"><Zap className="h-6 w-6 text-amber-500" /></div>
                   <div>
                     <h4 className="text-lg font-bold mb-1">Peak Energy Hours</h4>
@@ -276,11 +276,11 @@ export default function Dashboard() {
 
           {/* Recent Activity */}
           <motion.div variants={itemVariants} className="col-span-1 md:col-span-6">
-            <GlassCard className="p-8 h-full bg-transparent backdrop-blur-sm shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)] border border-white/10 rounded-3xl">
+            <GlassCard className="p-8 h-full bg-transparent backdrop-blur-[2px] shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)] border border-white/10 rounded-3xl">
               <h3 className="text-2xl font-bold mb-8">Recent Logged Activity</h3>
               <div className="space-y-4">
                 {activities.length === 0 ? (
-                  <div className="flex flex-col items-center justify-center h-48 text-center bg-transparent backdrop-blur-sm rounded-2xl border border-white/5">
+                  <div className="flex flex-col items-center justify-center h-48 text-center bg-transparent backdrop-blur-[2px] rounded-2xl border border-white/5">
                     <ActivityIcon className="h-12 w-12 text-white/20 mb-4" />
                     <p className="text-white/50 mb-2">No activities logged yet.</p>
                     <Button variant="link" className="text-primary hover:text-primary/80" asChild><Link href="/upload">Log an activity</Link></Button>
@@ -290,7 +290,7 @@ export default function Dashboard() {
                     <motion.div 
                       key={act.id} 
                       whileHover={{ x: 5 }}
-                      className="flex items-center justify-between p-5 rounded-2xl bg-transparent backdrop-blur-sm hover:bg-white/10 transition-colors border border-white/5"
+                      className="flex items-center justify-between p-5 rounded-2xl bg-transparent backdrop-blur-[2px] hover:bg-white/10 transition-colors border border-white/5"
                     >
                       <div className="flex items-center gap-4">
                         <div className="p-3.5 rounded-xl bg-black/50">
