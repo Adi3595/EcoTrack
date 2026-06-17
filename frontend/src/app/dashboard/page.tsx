@@ -134,12 +134,25 @@ export default function Dashboard() {
 
   return (
     <div className="flex min-h-screen bg-transparent text-white selection:bg-teal-500/30 relative z-0 overflow-hidden">
-      {/* Clean & Clear Water Ambient Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#011414] via-[#002626] to-[#02181f] pointer-events-none z-[-2]" />
+      {/* SVG Water Ripple Filter Definition */}
+      <svg className="hidden">
+        <filter id="water-filter">
+          <feTurbulence type="fractalNoise" baseFrequency="0.01 0.01" numOctaves="2" result="noise">
+            <animate attributeName="baseFrequency" values="0.01 0.01;0.015 0.02;0.01 0.01" dur="10s" repeatCount="indefinite" />
+          </feTurbulence>
+          <feDisplacementMap in="SourceGraphic" in2="noise" scale="20" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+      </svg>
+
+      {/* Water Refraction Overlay applied over the entire background */}
+      <div className="absolute inset-0 z-[-2] pointer-events-none" style={{ backdropFilter: 'url(#water-filter)' }} />
+      
+      {/* Subtle Tint instead of opaque gradient */}
+      <div className="absolute inset-0 bg-teal-950/40 mix-blend-multiply pointer-events-none z-[-2]" />
       
       {/* Slow moving liquid orbs */}
-      <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-teal-500/10 blur-[120px] rounded-[100%] pointer-events-none z-[-1] animate-pulse" style={{ animationDuration: '10s' }} />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-cyan-600/10 blur-[100px] rounded-[100%] pointer-events-none z-[-1] animate-pulse" style={{ animationDuration: '12s', animationDelay: '2s' }} />
+      <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-teal-400/20 blur-[120px] rounded-[100%] pointer-events-none z-[-1] animate-pulse" style={{ animationDuration: '8s' }} />
+      <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-cyan-500/20 blur-[100px] rounded-[100%] pointer-events-none z-[-1] animate-pulse" style={{ animationDuration: '10s', animationDelay: '2s' }} />
 
       <WaterRipple />
       <Shared3DBackground />
