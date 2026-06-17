@@ -133,7 +133,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="flex min-h-screen bg-transparent text-white selection:bg-primary/30 relative z-0">
+    <div className="flex min-h-screen bg-transparent text-white [text-shadow:_0_2px_12px_rgb(0_0_0_/_100%)] selection:bg-primary/30 relative z-0">
       <Shared3DBackground />
       <WaterRipple />
       <Sidebar activeTab="dashboard" />

@@ -20,7 +20,7 @@ export function WaterRipple() {
       y: e.clientY
     }
     
-    setRipples(prev => [...prev.slice(-15), newRipple]) // Keep max 15 ripples at a time
+    setRipples(prev => [...prev.slice(-40), newRipple]) // Keep max 40 ripples for a long trailing wake
   }, [])
 
   useEffect(() => {
@@ -33,7 +33,7 @@ export function WaterRipple() {
     if (ripples.length > 0) {
       const timer = setTimeout(() => {
         setRipples(prev => prev.filter(r => r.id !== ripples[0].id))
-      }, 1000)
+      }, 2500)
       return () => clearTimeout(timer)
     }
   }, [ripples])
@@ -52,25 +52,25 @@ export function WaterRipple() {
             }}
             animate={{ 
               opacity: 0, 
-              scale: 2,
+              scale: 3,
               x: "-50%",
               y: "-50%"
             }}
             exit={{ opacity: 0 }}
             transition={{ 
-              duration: 1, 
+              duration: 2.5, 
               ease: "easeOut" 
             }}
             style={{
               position: "absolute",
               left: ripple.x,
               top: ripple.y,
-              width: "100px",
-              height: "100px",
+              width: "150px",
+              height: "150px",
               borderRadius: "50%",
-              border: "2px solid rgba(255, 255, 255, 0.4)",
-              boxShadow: "0 0 20px rgba(255, 255, 255, 0.2), inset 0 0 20px rgba(255, 255, 255, 0.2)",
-              backdropFilter: "blur(2px)",
+              border: "3px solid rgba(255, 255, 255, 0.5)",
+              boxShadow: "0 0 40px rgba(149, 212, 179, 0.4), inset 0 0 40px rgba(149, 212, 179, 0.4)",
+              backdropFilter: "blur(6px)",
             }}
           />
         ))}
