@@ -133,7 +133,14 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="flex min-h-screen bg-transparent text-white selection:bg-primary/30 relative z-0">
+    <div className="flex min-h-screen bg-transparent text-white selection:bg-teal-500/30 relative z-0 overflow-hidden">
+      {/* Clean & Clear Water Ambient Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#011414] via-[#002626] to-[#02181f] pointer-events-none z-[-2]" />
+      
+      {/* Slow moving liquid orbs */}
+      <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-teal-500/10 blur-[120px] rounded-[100%] pointer-events-none z-[-1] animate-pulse" style={{ animationDuration: '10s' }} />
+      <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-cyan-600/10 blur-[100px] rounded-[100%] pointer-events-none z-[-1] animate-pulse" style={{ animationDuration: '12s', animationDelay: '2s' }} />
+
       <WaterRipple />
       <Shared3DBackground />
       <Sidebar activeTab="dashboard" />
@@ -142,11 +149,11 @@ export default function Dashboard() {
       <main className="flex-1 p-6 md:p-10 max-w-7xl mx-auto overflow-y-auto">
         <header className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-10 gap-4">
           <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}>
-            <h1 className="text-4xl md:text-5xl font-bold mb-2 tracking-tight">Hello, {user?.full_name || "Eco Warrior"}</h1>
-            <p className="text-lg text-white/60">Your sustainability performance this week.</p>
+            <h1 className="text-4xl md:text-5xl font-bold mb-2 tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-teal-200 via-white to-cyan-300 drop-shadow-[0_0_10px_rgba(45,212,191,0.3)]">Hello, {user?.full_name || "Eco Warrior"}</h1>
+            <p className="text-lg text-teal-50/70 font-light">Your sustainability performance flowing smoothly this week.</p>
           </motion.div>
           <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}>
-            <Button className="shadow-[0_0_20px_rgba(149,212,179,0.3)] hover:shadow-[0_0_30px_rgba(149,212,179,0.5)] transition-shadow text-[#001209] font-bold rounded-full px-8" asChild>
+            <Button className="bg-gradient-to-r from-teal-500/80 to-cyan-600/80 hover:from-teal-400 hover:to-cyan-500 border border-teal-300/30 shadow-[0_0_20px_rgba(45,212,191,0.3)] hover:shadow-[0_0_30px_rgba(45,212,191,0.5)] backdrop-blur-md transition-all text-white font-bold rounded-full px-8" asChild>
               <Link href="/upload">Log New Activity</Link>
             </Button>
           </motion.div>
@@ -161,24 +168,24 @@ export default function Dashboard() {
         >
           {/* Main Score Card */}
           <motion.div variants={itemVariants} className="col-span-1 md:col-span-8">
-            <GlassCard className="p-8 flex flex-col md:flex-row items-center gap-8 h-full bg-white/5 backdrop-blur-3xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)] border border-white/10 rounded-3xl">
+            <GlassCard className="p-8 flex flex-col md:flex-row items-center gap-8 h-full bg-white/[0.03] backdrop-blur-[60px] shadow-[inset_0_1px_1px_rgba(255,255,255,0.3),_0_8px_32px_rgba(0,0,0,0.2)] border border-teal-200/20 rounded-3xl hover:border-teal-300/40 transition-colors group">
               <motion.div 
                 initial={{ scale: 0 }} 
                 animate={{ scale: 1 }} 
                 transition={{ type: "spring", delay: 0.2 }}
                 className="relative"
               >
-                <div className="absolute inset-0 bg-primary/20 blur-[50px] rounded-full" />
+                <div className="absolute inset-0 bg-teal-400/20 blur-[50px] rounded-full group-hover:bg-teal-300/30 transition-colors duration-500" />
                 <CircularGauge value={user.carbon_score || 0} max={100} size={160} />
               </motion.div>
               <div className="flex-1 space-y-4 text-center md:text-left">
-                <h3 className="text-3xl font-bold">Great Job!</h3>
-                <p className="text-lg text-white/70 leading-relaxed">
-                  You've reduced your carbon emissions by <span className="text-primary font-bold drop-shadow-[0_0_10px_rgba(149,212,179,0.5)]">15%</span> compared to last week. Keep up the sustainable habits!
+                <h3 className="text-3xl font-bold tracking-tight text-white drop-shadow-md">Crystal Clear Impact!</h3>
+                <p className="text-lg text-teal-50/80 font-light leading-relaxed">
+                  You've reduced your carbon emissions by <span className="text-teal-300 font-bold drop-shadow-[0_0_10px_rgba(94,234,212,0.6)]">15%</span> compared to last week. Keep up the flowing momentum!
                 </p>
                 <div className="flex gap-3 justify-center md:justify-start pt-2">
-                  <CarbonChip level="high" className="bg-primary/20 border-primary/50 text-primary">Top 20%</CarbonChip>
-                  <CarbonChip level="neutral" className="bg-white/10 border-white/20 text-white">Eco Warrior</CarbonChip>
+                  <CarbonChip level="high" className="bg-teal-500/20 border-teal-300/50 text-teal-200">Top 20%</CarbonChip>
+                  <CarbonChip level="neutral" className="bg-white/10 border-white/30 text-white/90">Eco Stream</CarbonChip>
                 </div>
               </div>
             </GlassCard>
@@ -186,25 +193,26 @@ export default function Dashboard() {
 
           {/* Quick Stats */}
           <motion.div variants={itemVariants} className="col-span-1 md:col-span-4">
-            <GlassCard className="p-8 flex flex-col justify-between h-full bg-gradient-to-br from-white/10 to-transparent backdrop-blur-3xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)] border border-white/10 rounded-3xl">
-              <h3 className="text-sm font-bold uppercase tracking-widest text-white/50 mb-6">Emissions Breakdown</h3>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between p-4 rounded-2xl bg-black/40 border border-white/5">
-                  <div className="flex items-center gap-4 font-medium">
-                    <div className="p-2.5 rounded-xl bg-primary/20"><Car className="h-5 w-5 text-primary" /></div> 
+            <GlassCard className="p-8 flex flex-col justify-between h-full bg-gradient-to-b from-white/[0.06] to-transparent backdrop-blur-[60px] shadow-[inset_0_1px_1px_rgba(255,255,255,0.25)] border border-teal-200/20 rounded-3xl relative overflow-hidden group">
+              <div className="absolute top-[-20%] right-[-20%] w-48 h-48 bg-cyan-400/10 blur-[50px] rounded-full pointer-events-none group-hover:bg-cyan-400/20 transition-colors duration-500" />
+              <h3 className="text-sm font-bold uppercase tracking-widest text-teal-100/50 mb-6">Emissions Pool</h3>
+              <div className="space-y-4 relative z-10">
+                <div className="flex items-center justify-between p-4 rounded-2xl bg-black/20 border border-teal-200/10 shadow-inner backdrop-blur-md">
+                  <div className="flex items-center gap-4 font-medium text-white/90">
+                    <div className="p-2.5 rounded-xl bg-teal-500/20 shadow-[inset_0_0_10px_rgba(20,184,166,0.3)]"><Car className="h-5 w-5 text-teal-300" /></div> 
                     Transport
                   </div>
-                  <span className="text-2xl font-bold">120 <span className="text-sm text-white/50 font-normal">kg</span></span>
+                  <span className="text-2xl font-bold text-white">120 <span className="text-sm text-teal-100/40 font-normal">kg</span></span>
                 </div>
-                <div className="flex items-center justify-between p-4 rounded-2xl bg-black/40 border border-white/5">
-                  <div className="flex items-center gap-4 font-medium">
-                    <div className="p-2.5 rounded-xl bg-amber-500/20"><Zap className="h-5 w-5 text-amber-500" /></div> 
+                <div className="flex items-center justify-between p-4 rounded-2xl bg-black/20 border border-teal-200/10 shadow-inner backdrop-blur-md">
+                  <div className="flex items-center gap-4 font-medium text-white/90">
+                    <div className="p-2.5 rounded-xl bg-cyan-500/20 shadow-[inset_0_0_10px_rgba(6,182,212,0.3)]"><Zap className="h-5 w-5 text-cyan-300" /></div> 
                     Electricity
                   </div>
-                  <span className="text-2xl font-bold">85 <span className="text-sm text-white/50 font-normal">kg</span></span>
+                  <span className="text-2xl font-bold text-white">85 <span className="text-sm text-teal-100/40 font-normal">kg</span></span>
                 </div>
               </div>
-              <Button variant="outline" className="w-full mt-8 border-white/10 hover:bg-white/10 hover:text-white rounded-full transition-all" asChild>
+              <Button variant="outline" className="w-full mt-8 border-teal-300/30 hover:bg-teal-500/20 hover:border-teal-300 text-teal-50 rounded-full transition-all relative z-10 backdrop-blur-sm" asChild>
                 <Link href="/chat">Ask AI for Tips</Link>
               </Button>
             </GlassCard>
@@ -212,33 +220,33 @@ export default function Dashboard() {
 
           {/* Weekly Trends Chart */}
           <motion.div variants={itemVariants} className="col-span-1 md:col-span-12">
-            <GlassCard className="p-8 bg-white/5 backdrop-blur-3xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)] border border-white/10 rounded-3xl">
+            <GlassCard className="p-8 bg-white/[0.03] backdrop-blur-[60px] shadow-[inset_0_1px_1px_rgba(255,255,255,0.2)] border border-teal-200/20 rounded-3xl">
               <div className="flex items-center justify-between mb-8">
-                <h3 className="text-2xl font-bold">Weekly Emissions Trend</h3>
-                <CarbonChip level="low" className="bg-primary/20 border-primary/50 text-primary animate-pulse">Live Data</CarbonChip>
+                <h3 className="text-2xl font-bold tracking-tight text-white drop-shadow-md">Weekly Flow Trend</h3>
+                <CarbonChip level="low" className="bg-teal-500/20 border-teal-400/50 text-teal-300 animate-pulse">Live Stream</CarbonChip>
               </div>
               <div className="h-[350px] w-full">
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={mockChartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                     <defs>
                       <linearGradient id="colorTransport" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#95d4b3" stopOpacity={0.5}/>
-                        <stop offset="95%" stopColor="#95d4b3" stopOpacity={0}/>
+                        <stop offset="5%" stopColor="#2dd4bf" stopOpacity={0.6}/>
+                        <stop offset="95%" stopColor="#2dd4bf" stopOpacity={0}/>
                       </linearGradient>
                       <linearGradient id="colorEnergy" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#F59E0B" stopOpacity={0.5}/>
-                        <stop offset="95%" stopColor="#F59E0B" stopOpacity={0}/>
+                        <stop offset="5%" stopColor="#06b6d4" stopOpacity={0.6}/>
+                        <stop offset="95%" stopColor="#06b6d4" stopOpacity={0}/>
                       </linearGradient>
                     </defs>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.05)" />
-                    <XAxis dataKey="name" stroke="rgba(255,255,255,0.3)" tickLine={false} axisLine={false} />
-                    <YAxis stroke="rgba(255,255,255,0.3)" tickLine={false} axisLine={false} />
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(20,184,166,0.15)" />
+                    <XAxis dataKey="name" stroke="rgba(204,253,246,0.6)" tickLine={false} axisLine={false} />
+                    <YAxis stroke="rgba(204,253,246,0.6)" tickLine={false} axisLine={false} />
                     <Tooltip 
-                      contentStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', backdropFilter: 'blur(10px)' }}
-                      itemStyle={{ color: '#fff', fontWeight: 'bold' }}
+                      contentStyle={{ backgroundColor: 'rgba(1, 20, 20, 0.7)', borderRadius: '16px', border: '1px solid rgba(45,212,191,0.3)', backdropFilter: 'blur(20px)', boxShadow: '0 8px 32px rgba(0,0,0,0.3)' }}
+                      itemStyle={{ color: '#ccfbf1', fontWeight: 'bold' }}
                     />
-                    <Area type="monotone" dataKey="transport" stroke="#95d4b3" strokeWidth={4} fillOpacity={1} fill="url(#colorTransport)" />
-                    <Area type="monotone" dataKey="energy" stroke="#F59E0B" strokeWidth={4} fillOpacity={1} fill="url(#colorEnergy)" />
+                    <Area type="monotone" dataKey="transport" stroke="#2dd4bf" strokeWidth={4} fillOpacity={1} fill="url(#colorTransport)" />
+                    <Area type="monotone" dataKey="energy" stroke="#06b6d4" strokeWidth={4} fillOpacity={1} fill="url(#colorEnergy)" />
                   </AreaChart>
                 </ResponsiveContainer>
               </div>
@@ -247,27 +255,27 @@ export default function Dashboard() {
 
           {/* AI Recommendations */}
           <motion.div variants={itemVariants} className="col-span-1 md:col-span-6">
-            <GlassCard className="p-8 h-full bg-white/5 backdrop-blur-3xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)] border border-white/10 rounded-3xl">
+            <GlassCard className="p-8 h-full bg-white/[0.03] backdrop-blur-[60px] shadow-[inset_0_1px_1px_rgba(255,255,255,0.2)] border border-teal-200/20 rounded-3xl">
               <div className="flex items-center justify-between mb-8">
-                <h3 className="text-2xl font-bold">AI Insights</h3>
+                <h3 className="text-2xl font-bold tracking-tight text-white drop-shadow-md">AI Insights</h3>
                 <span className="relative flex h-3 w-3">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-3 w-3 bg-teal-400"></span>
                 </span>
               </div>
               <ul className="space-y-4">
-                <li className="flex items-start gap-4 p-5 rounded-2xl bg-white/5 border border-white/5 hover:border-primary/50 transition-colors shadow-lg">
-                  <div className="bg-primary/20 p-3.5 rounded-xl"><Leaf className="h-6 w-6 text-primary" /></div>
+                <li className="flex items-start gap-4 p-5 rounded-2xl bg-black/20 border border-teal-200/10 hover:border-teal-400/50 hover:bg-teal-900/20 transition-colors shadow-inner backdrop-blur-sm">
+                  <div className="bg-teal-500/20 p-3.5 rounded-xl shadow-[inset_0_0_10px_rgba(20,184,166,0.3)]"><Leaf className="h-6 w-6 text-teal-300" /></div>
                   <div>
-                    <h4 className="text-lg font-bold mb-1">Switch to Public Transit</h4>
-                    <p className="text-white/60">Taking the train tomorrow could save 5kg of CO2.</p>
+                    <h4 className="text-lg font-bold mb-1 text-white">Smooth Transit</h4>
+                    <p className="text-teal-50/60 font-light">Taking the train tomorrow could save 5kg of CO2.</p>
                   </div>
                 </li>
-                <li className="flex items-start gap-4 p-5 rounded-2xl bg-white/5 border border-white/5 hover:border-amber-500/50 transition-colors shadow-lg">
-                  <div className="bg-amber-500/20 p-3.5 rounded-xl"><Zap className="h-6 w-6 text-amber-500" /></div>
+                <li className="flex items-start gap-4 p-5 rounded-2xl bg-black/20 border border-teal-200/10 hover:border-cyan-400/50 hover:bg-cyan-900/20 transition-colors shadow-inner backdrop-blur-sm">
+                  <div className="bg-cyan-500/20 p-3.5 rounded-xl shadow-[inset_0_0_10px_rgba(6,182,212,0.3)]"><Zap className="h-6 w-6 text-cyan-300" /></div>
                   <div>
-                    <h4 className="text-lg font-bold mb-1">Peak Energy Hours</h4>
-                    <p className="text-white/60">Avoid using the washer between 5 PM and 8 PM.</p>
+                    <h4 className="text-lg font-bold mb-1 text-white">Energy Currents</h4>
+                    <p className="text-teal-50/60 font-light">Avoid using the washer between 5 PM and 8 PM.</p>
                   </div>
                 </li>
               </ul>
@@ -276,34 +284,34 @@ export default function Dashboard() {
 
           {/* Recent Activity */}
           <motion.div variants={itemVariants} className="col-span-1 md:col-span-6">
-            <GlassCard className="p-8 h-full bg-white/5 backdrop-blur-3xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)] border border-white/10 rounded-3xl">
-              <h3 className="text-2xl font-bold mb-8">Recent Logged Activity</h3>
+            <GlassCard className="p-8 h-full bg-white/[0.03] backdrop-blur-[60px] shadow-[inset_0_1px_1px_rgba(255,255,255,0.2)] border border-teal-200/20 rounded-3xl">
+              <h3 className="text-2xl font-bold mb-8 tracking-tight text-white drop-shadow-md">Recent Drops</h3>
               <div className="space-y-4">
                 {activities.length === 0 ? (
-                  <div className="flex flex-col items-center justify-center h-48 text-center bg-white/5 rounded-2xl border border-white/5">
-                    <ActivityIcon className="h-12 w-12 text-white/20 mb-4" />
-                    <p className="text-white/50 mb-2">No activities logged yet.</p>
-                    <Button variant="link" className="text-primary hover:text-primary/80" asChild><Link href="/upload">Log an activity</Link></Button>
+                  <div className="flex flex-col items-center justify-center h-48 text-center bg-black/20 rounded-2xl border border-teal-200/10 shadow-inner backdrop-blur-sm">
+                    <ActivityIcon className="h-12 w-12 text-teal-200/20 mb-4" />
+                    <p className="text-teal-100/50 mb-2 font-light">The stream is empty. Log your first activity.</p>
+                    <Button variant="link" className="text-teal-400 hover:text-teal-300 drop-shadow-[0_0_10px_rgba(45,212,191,0.5)]" asChild><Link href="/upload">Log an activity</Link></Button>
                   </div>
                 ) : (
                   activities.slice(0, 3).map((act) => (
                     <motion.div 
                       key={act.id} 
                       whileHover={{ x: 5 }}
-                      className="flex items-center justify-between p-5 rounded-2xl bg-white/5 hover:bg-white/10 transition-colors border border-white/5"
+                      className="flex items-center justify-between p-5 rounded-2xl bg-black/20 hover:bg-teal-900/20 transition-colors border border-teal-200/10 shadow-inner backdrop-blur-sm group"
                     >
                       <div className="flex items-center gap-4">
-                        <div className="p-3.5 rounded-xl bg-black/50">
-                          {act.activity_type === 'TRANSPORT' ? <Car className="h-5 w-5 text-white/70" /> : <Zap className="h-5 w-5 text-white/70" />}
+                        <div className="p-3.5 rounded-xl bg-black/40 group-hover:bg-teal-500/20 transition-colors shadow-[inset_0_0_10px_rgba(255,255,255,0.05)] group-hover:shadow-[inset_0_0_10px_rgba(20,184,166,0.3)]">
+                          {act.activity_type === 'TRANSPORT' ? <Car className="h-5 w-5 text-teal-200/70 group-hover:text-teal-300 transition-colors" /> : <Zap className="h-5 w-5 text-teal-200/70 group-hover:text-teal-300 transition-colors" />}
                         </div>
                         <div>
-                          <p className="text-lg font-bold leading-tight mb-1">{act.description || act.activity_type}</p>
-                          <p className="text-xs text-white/40 uppercase tracking-wider">{new Date(act.timestamp).toLocaleDateString()}</p>
+                          <p className="text-lg font-bold leading-tight mb-1 text-white">{act.description || act.activity_type}</p>
+                          <p className="text-xs text-teal-100/40 uppercase tracking-wider">{new Date(act.timestamp).toLocaleDateString()}</p>
                         </div>
                       </div>
                       <div className="text-right">
-                        <span className="text-xl font-bold block text-primary">+ {act.value}</span>
-                        <span className="text-xs text-white/40 uppercase tracking-wider">{act.activity_type === 'TRANSPORT' ? 'km' : 'kWh'}</span>
+                        <span className="text-xl font-bold block text-teal-400 drop-shadow-[0_0_5px_rgba(45,212,191,0.5)]">+ {act.value}</span>
+                        <span className="text-xs text-teal-100/40 uppercase tracking-wider">{act.activity_type === 'TRANSPORT' ? 'km' : 'kWh'}</span>
                       </div>
                     </motion.div>
                   ))
