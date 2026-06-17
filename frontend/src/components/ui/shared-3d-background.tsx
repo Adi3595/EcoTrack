@@ -55,13 +55,28 @@ export function Shared3DBackground() {
   return (
     <>
       <div className="fixed inset-0 z-[-10] overflow-hidden bg-[#001209]">
-        {/* Main Background Image */}
+        {/* Main Background Image - Base Layer */}
         <div 
           ref={bgRef}
-          className="absolute inset-[-5%] w-[110%] h-[110%] bg-cover bg-center opacity-40 will-change-transform"
+          className="absolute inset-[-5%] w-[110%] h-[110%] bg-cover bg-center opacity-50 will-change-transform"
           style={{ backgroundImage: 'url(/bg-dashboard.jpg)' }}
         />
         
+        {/* Watery Image Layer 1 - Blurred Refraction */}
+        <div 
+          className="absolute inset-[-10%] w-[120%] h-[120%] bg-cover bg-center opacity-30 mix-blend-overlay blur-[4px] will-change-transform animate-pulse"
+          style={{ backgroundImage: 'url(/bg-dashboard.jpg)', animationDuration: '8s' }}
+        />
+
+        {/* Watery Image Layer 2 - Wave Distortion Simulation */}
+        <div 
+          className="absolute inset-[-5%] w-[110%] h-[110%] bg-cover bg-center opacity-20 mix-blend-screen blur-[2px] will-change-transform"
+          style={{ 
+            backgroundImage: 'url(/bg-dashboard.jpg)',
+            transform: 'scale(1.05)',
+            animation: 'liquidWave 12s ease-in-out infinite alternate'
+          }}
+        />
         {/* Subtle Dynamic Fog/Light Layer */}
         <div className="absolute inset-[-10%] w-[120%] h-[120%] pointer-events-none mix-blend-screen opacity-30 will-change-transform">
           <div ref={fogRef} className="absolute inset-0">
