@@ -31,7 +31,7 @@ Built as part of a high-speed hackathon sprint, EcoTrack prioritizes a premium, 
 ## ✨ Core Features
 
 *   🏎️ **Cinematic UI/UX:** Built with Next.js App Router, Tailwind CSS, and Framer Motion for incredibly smooth, kinetic typography, zero-latency custom cursors, spherical wipe page transitions, and fluid 3D glassmorphic designs.
-*   🌊 **Immersive Water Aesthetics:** A completely custom volumetric 3D water background with organic liquid morphing and breathing glass highlights.
+*   🌊 **Immersive True WebGL Water Physics:** Fully integrated `react-water-wave` for a true mathematical fluid simulation canvas. Features organic, real-time liquid morphing, massive custom ripple wakes, and 3D depth parallax CSS masking that reacts to every cursor movement without dropping a frame.
 *   🧠 **AI-Powered Insights:** Deep integration with Groq API (LLaMA 3) to act as a 24/7 personal sustainability coach, featuring a 100% transparent floating chat window that seamlessly blends into the environment.
 *   🗺️ **Live Travel Tracking:** Real-time GPS and WebSocket-based emission monitoring. Hit "Start Trip" and watch your distance and footprint dynamically calculate.
 *   📸 **Smart OCR Receipt Scanner:** Upload a photo of your grocery or energy bill, and let our Celery background workers process it via AI to automatically extract the carbon footprint of your purchases.
