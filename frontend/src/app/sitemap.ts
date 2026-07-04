@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://ecotrack.vercel.app'
+  const baseUrl = 'https://ecotrack-c4af6.web.app'
 
   return [
     {
