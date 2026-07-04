@@ -39,3 +39,7 @@ build/
 # Docker
 .docker/
 docker-compose.override.yml
+
+# Custom EcoTrack Ignores
+*.mp4
+.firebase/
